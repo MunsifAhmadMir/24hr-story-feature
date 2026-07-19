@@ -16,6 +16,7 @@ export interface StoryType {
   name: string;
   avatar: string;
   image: string;
+  createdAt?: number;
 }
 
 interface StoriesBarProps {
@@ -55,7 +56,6 @@ export default function StoriesBar({
   // ------------------------------------------
   // Click handler for individual story circles to log action and notify parent App component
   function handleStoryClick(id: number) {
-    console.log("Story with id # ", id, " has been clicked");
     // Send the clicked story's ID back up to the parent component to open the modal
     onSelectStory(id);
   }
@@ -91,8 +91,10 @@ export default function StoriesBar({
       // 1. SUCCESS CALLBACK: Fires only when the file is fully and successfully read
       reader.onload = () => {
         const base64String = reader.result as string;
-        console.log("User nay file select ke hai: ", file.name);
         onUploadStory(base64String);
+        if (fileInputRef.current) {
+          fileInputRef.current.value = "";
+        }
       };
 
       // 2. ERROR CALLBACK: Fallback safety if the browser fails to process the file

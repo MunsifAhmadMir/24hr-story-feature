@@ -46,19 +46,18 @@ export default function StoryModal({
     setProgress(0);
 
     const interval = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(interval);
-          onNext();
-          return 100;
-        }
-        return prev + 1;
-      });
+      setProgress((prev) => Math.min(prev + 1, 100));
     }, 30); // 30ms per step * 100 steps = 3000ms (Exactly 3 seconds total duration) OR 3000/100 = 30ms per step
     return () => {
       clearInterval(interval);
     };
   }, [currentStory.id, onNext]);
+
+  useEffect(() => {
+    if (progress >= 100) {
+      onNext();
+    }
+  }, [progress, onNext]);
 
   // ------------------------------------------
   //
@@ -84,10 +83,8 @@ export default function StoryModal({
     const minSwipeDistance = 50;
 
     if (difference > minSwipeDistance) {
-      console.log("Left Swipe -> Next");
       onNext();
-    } else if (difference < minSwipeDistance) {
-      console.log("Right Swipe -> Prev");
+    } else if (difference < -minSwipeDistance) {
       onPrev();
     }
 
