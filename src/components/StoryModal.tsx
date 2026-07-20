@@ -1,5 +1,6 @@
+import StoryProgressBar from "./StoryProgressBar";
 import { useEffect, useState } from "react";
-import { type StoryType } from "./StoriesBar";
+import type { StoryType } from "../types/story";
 
 interface StoryModalProps {
   onClose: () => void;
@@ -22,8 +23,8 @@ export default function StoryModal({
 }: StoryModalProps) {
   // Stores the current screen width in pixels to handle responsive layouts (mobile vs desktop)
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  // Tracks the loading animation percentage (0 to 100) of the currently active story bar
-  const [progress, setProgress] = useState(0);
+  // Is boolean flag se pure CSS transition smooth chalay ga bina state looping ke
+  const [isAnimate, setIsAnimate] = useState(false);
 
   // Tracks where the user first touches the screen on the horizontal axis
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
@@ -41,23 +42,26 @@ export default function StoryModal({
     return () => window.removeEventListener("resize", handleResize);
   }, []); // 5. Empty/Dependency Array [] ensures this setup runs ONLY ONCE when the component loads
 
-  // Exact 3 seconds progress bar timer handler
+  // FIXED: Warning aur Flicker khatam karne ke liye simple hardware-accelerated timers
   useEffect(() => {
-    setProgress(0);
+    setIsAnimate(false); // Reset timeline line to 0% immediately
 
-    const interval = setInterval(() => {
-      setProgress((prev) => Math.min(prev + 1, 100));
-    }, 30); // 30ms per step * 100 steps = 3000ms (Exactly 3 seconds total duration) OR 3000/100 = 30ms per step
+    const frameId = requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        setIsAnimate(true);
+      });
+    });
+
+    // Exact 3000ms baad background frame queue execute karega safely
+    const storyTimeout = setTimeout(() => {
+      onNext();
+    }, 3000);
+
     return () => {
-      clearInterval(interval);
+      cancelAnimationFrame(frameId);
+      clearTimeout(storyTimeout);
     };
   }, [currentStory.id, onNext]);
-
-  useEffect(() => {
-    if (progress >= 100) {
-      onNext();
-    }
-  }, [progress, onNext]);
 
   // ------------------------------------------
   //
@@ -150,6 +154,10 @@ export default function StoryModal({
       </button>
 
       {/* 2. WHITE CARD CONTAINER DIV: Main card that contains the header and the image */}
+
+      {/* Renders equal-width multi-segment progress bars using
+        hardware-accelerated // CSS transitions to smoothly track active
+        playback without interface flickering */}
       <div
         onClick={(e) => {
           e.stopPropagation();
@@ -165,49 +173,11 @@ export default function StoryModal({
             "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
         }}
       >
-        {/* 3. DIV: MULTIPLE SEGMENTS PROGRESS BARS CONTAINER */}
-        <div
-          style={{
-            padding: "10px 16px 2px 16px",
-            backgroundColor: "#ffffff",
-            display: "flex",
-            gap: "6px",
-          }}
-        >
-          {stories.map((storyItem, index) => {
-            let barWidth = "0%";
-
-            if (index < currentStoryIndex) {
-              barWidth = "100%";
-            } else if (index === currentStoryIndex) {
-              barWidth = `${progress}%`;
-            }
-            return (
-              <div
-                key={storyItem.id}
-                style={{
-                  height: "3px",
-                  flex: 1,
-                  backgroundColor: "#efefef",
-                  borderRadius: "2px",
-                  overflow: "hidden",
-                }}
-              >
-                <div
-                  style={{
-                    height: "100%",
-                    width: barWidth,
-                    backgroundColor: "#262626",
-                    transition:
-                      index === currentStoryIndex
-                        ? "width 30ms linear"
-                        : "none",
-                  }}
-                />
-              </div>
-            );
-          })}
-        </div>
+        <StoryProgressBar
+          stories={stories}
+          currentStoryIndex={currentStoryIndex}
+          isAnimate={isAnimate}
+        />
 
         {/* 4. MAIN HEADER BAR DIV: Holds the user section on the left and the close button on the right */}
         <div
@@ -256,7 +226,6 @@ export default function StoryModal({
             ✕
           </button>
         </div>
-
         {/* 5. New Wrapper Box DIV: Keeps absolute tap zones limited only to the image area */}
         <div style={{ position: "relative", width: "100%" }}>
           <img

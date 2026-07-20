@@ -1,19 +1,9 @@
+import type { StoryType } from "../types/story";
+
 /*
  * StoryItem
  * Displays a single story preview with a circular image and username.
  */
-
-// TODO:
-// Move shared interfaces to a common types.ts file.
-// This prevents duplicate type definitions across components.
-
-interface StoryType {
-  id: number;
-  name: string;
-  avatar: string;
-  image: string;
-  createdAt?: number;
-}
 
 // Props received by the StoryItem component
 interface StoryItemProps {

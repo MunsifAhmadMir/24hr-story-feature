@@ -1,23 +1,12 @@
 import StoryItem from "./StoryItem";
 import { useRef } from "react"; // <-- Create the Ref hook
+import type { StoryType } from "../types/story";
 
 /*
  * StoriesBar
  * Displays a horizontal list of story previews.
  * Manages the stories data and renders each StoryItem.
  */
-
-// TODO:
-// Move this interface to a shared types.ts file.
-// It will be reused by multiple components and helps avoid duplication.
-
-export interface StoryType {
-  id: number;
-  name: string;
-  avatar: string;
-  image: string;
-  createdAt?: number;
-}
 
 interface StoriesBarProps {
   // Callback function triggered when a user selects a specific story badge/item
