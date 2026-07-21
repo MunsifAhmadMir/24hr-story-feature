@@ -1,4 +1,5 @@
 import type { StoryType } from "../types/story";
+import styles from "./StoryItem.module.css";
 
 /*
  * StoryItem
@@ -24,40 +25,16 @@ export default function StoryItem({ story, onStoryClick }: StoryItemProps) {
       // Each story as a vertical card (image top, name bottom, centered)
       // OR
       // / Vertical layout for a single story
-      style={{
-        padding: "5px",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-      }}
+      className={styles.itemContainer}
     >
       <img
         src={story.avatar ? story.avatar : localDefaultAvatar}
         alt={story.name}
         // Sets circle size, border, and padding for the avatar (i.e. Circular avatar styling)
-        style={{
-          width: "56px",
-          height: "56px",
-          borderRadius: "50%",
-          padding: "2px",
-          border: "2px solid transparent", // Makes border clear so gradient can show through
-          // First part adds white gap, second adds Insta colors
-          backgroundImage:
-            "linear-gradient(white, white), linear-gradient(45deg, #f99d1c, #da2f7f, #7c3cb5)",
-          backgroundOrigin: "border-box", // Stretches the gradient colors to fill the entire border area
-          backgroundClip: "content-box, border-box", // Protects the center photo and keeps colors only on the ring
-        }}
+        className={styles.avatarRing}
       />
       {/* Displays the user's name */}
-      <p
-        style={{
-          fontSize: "12px",
-          marginTop: "6px",
-          color: "#555",
-        }}
-      >
-        {story.name}{" "}
-      </p>
+      <p className={styles.username}>{story.name} </p>
     </div>
   );
 }

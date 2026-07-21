@@ -1,0 +1,23 @@
+.progressContainer {
+  padding: 10px 16px 2px 16px;
+  background-color: #ffffff;
+  display: flex;
+  gap: 6px;
+}
+
+.barTrack {
+  height: 3px;
+  flex: 1;
+  background-color: #efefef;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.barFill {
+  height: 100%;
+  background-color: #262626;
+}
+
+.animatedFill {
+  transition: width 3000ms linear;
+}

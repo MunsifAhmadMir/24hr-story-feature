@@ -32,7 +32,7 @@ export default function App() {
 
   const [tempImage, setTempImage] = useState<string | null>(null);
   const [inputName, setInputName] = useState("");
-  const [selectedAvatar, setSelectedAvatar] = useState("1");
+  const [selectedAvatar, setSelectedAvatar] = useState("none");
 
   const [stories, setStories] = useState<StoryType[]>(() => {
     const savedStories = localStorage.getItem("insta_stories");
@@ -94,10 +94,15 @@ export default function App() {
   const handlePublishStory = () => {
     if (!tempImage) return;
 
+    const finalAvatarUrl =
+      selectedAvatar === "none"
+        ? ""
+        : `https://i.pravatar.cc/100?img=${selectedAvatar}`;
+
     const newStory: StoryType = {
       id: Date.now(),
       name: inputName.trim() || "You",
-      avatar: `https://i.pravatar.cc/100?img=${selectedAvatar}`,
+      avatar: finalAvatarUrl,
       image: tempImage,
       createdAt: Date.now(),
     };
@@ -106,7 +111,7 @@ export default function App() {
 
     setTempImage(null);
     setInputName("");
-    setSelectedAvatar("1");
+    setSelectedAvatar("none");
   };
 
   // Traverses forward inside the stories array collection or closes when list boundary ends
@@ -126,15 +131,6 @@ export default function App() {
       setActiveStoryId(stories[currentIndex - 1].id);
     }
   }, [activeStoryId, stories]);
-
-  // ------------------------------------------
-  // DEFENSIVE PROGRAMMING (GUARD CLAUSES)
-  // ------------------------------------------
-
-  // Safety fallback interceptor to shield renderer pipeline if target indices shift out-of-sync
-  //if (activeStoryId !== null && !currentStory) {
-  // return null; // Suppresses layout pipeline without rendering unhandled stack trace errors
-  //}
 
   // ==========================================
   // SCREEN RENDER (RETURN)
@@ -176,14 +172,3 @@ export default function App() {
     </div>
   );
 }
-
-/*const handleUploadStory = (base64String: string) => {
-    const newStory: StoryType = {
-      id: Date.now(),
-      name: "You",
-      avatar: "",
-      image: base64String,
-      createdAt: Date.now(),
-    };
-    setStories((prevStories) => [newStory, ...prevStories]);
-  };*/

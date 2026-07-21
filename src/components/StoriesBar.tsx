@@ -1,6 +1,7 @@
 import StoryItem from "./StoryItem";
 import { useRef } from "react"; // <-- Create the Ref hook
 import type { StoryType } from "../types/story";
+import styles from "./StoriesBar.module.css";
 
 /*
  * StoriesBar
@@ -105,26 +106,10 @@ export default function StoriesBar({
     // Horizontal scrollable container for story items
     <div
       // A flex container with spacing (gap) and padding
-      style={{
-        display: "flex",
-        gap: "12px",
-        padding: "12px",
-        overflowX: "auto",
-        scrollBehavior: "smooth",
-      }}
+      className={styles.scrollContainer}
     >
       {/* ---- NEW: PLUS BUTTON START ---- */}
-      <div
-        onClick={handlePlusClick}
-        style={{
-          padding: "5px",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          cursor: "pointer",
-          flexShrink: 0,
-        }}
-      >
+      <div onClick={handlePlusClick} className={styles.plusButtonContainer}>
         {/* Hidden input element */}
         <input
           type="file"
@@ -134,26 +119,8 @@ export default function StoriesBar({
           style={{ display: "none" }}
         />
 
-        <div
-          style={{
-            width: "56px",
-            height: "56px",
-            borderRadius: "50%",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: "#f0f0f0",
-            border: "2px dashed #dbdbdb",
-            fontSize: "24px",
-            color: "#000000",
-            fontWeight: "bold",
-          }}
-        >
-          +
-        </div>
-        <p style={{ fontSize: "12px", marginTop: "6px", color: "#555" }}>
-          Your Story
-        </p>
+        <div className={styles.plusCircle}>+</div>
+        <p className={styles.label}>Your Story</p>
       </div>
 
       {stories.map(renderStory)}

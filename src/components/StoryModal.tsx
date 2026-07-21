@@ -1,6 +1,8 @@
 import StoryProgressBar from "./StoryProgressBar";
+import UserBadge from "./UserBadge";
 import { useEffect, useState } from "react";
 import type { StoryType } from "../types/story";
+import styles from "./StoryModal.module.css";
 
 interface StoryModalProps {
   onClose: () => void;
@@ -46,19 +48,26 @@ export default function StoryModal({
   useEffect(() => {
     setIsAnimate(false); // Reset timeline line to 0% immediately
 
-    const frameId = requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
+    let firstFrameId: number;
+    let secondFrameId: number;
+
+    firstFrameId = requestAnimationFrame(() => {
+      secondFrameId = requestAnimationFrame(() => {
         setIsAnimate(true);
       });
     });
 
-    // Exact 3000ms baad background frame queue execute karega safely
+    // Exact 3000ms timer to auto-advance the story layout
     const storyTimeout = setTimeout(() => {
       onNext();
     }, 3000);
 
+    // Safely destroy both animation threads and the timeout
     return () => {
-      cancelAnimationFrame(frameId);
+      cancelAnimationFrame(firstFrameId);
+      if (secondFrameId) {
+        cancelAnimationFrame(secondFrameId);
+      }
       clearTimeout(storyTimeout);
     };
   }, [currentStory.id, onNext]);
@@ -97,10 +106,8 @@ export default function StoryModal({
     setTouchEndX(null);
   };
 
-  // Local code-based vector icon used as a fallback profile picture when 'avatar' is missing
-  // It draws a clean gray silhouette without needing any internet image link
-  const localDefaultAvatar = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23dbdbdb"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>`;
-  // 6. Check if screen is mobile size; returns true if under 500px, otherwise false
+  // 6. Check if screen is mobile size; returns true if under 500px,
+  // otherwise false
   const isMobile = windowWidth < 500;
 
   // ====================================================================================
@@ -108,26 +115,14 @@ export default function StoryModal({
   // ====================================================================================
 
   return (
-    // 1. BLACK FULL-SCREEN OVERLAY DIV: Dark background that covers the entire screen
+    //  1. BLACK FULL-SCREEN OVERLAY DIV: Dark background that covers
+    // the entire screen
     <div
       onClick={onClose}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
-      style={{
-        position: "fixed",
-        top: "0",
-        left: "0",
-        width: "100vw",
-        height: "100vh",
-        backgroundColor: "rgba(0, 0, 0, 0.9)",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        color: "white",
-        flexDirection: "row",
-        gap: "20px",
-      }}
+      className={styles.overlay}
     >
       {/* Desktop Left Button */}
       <button
@@ -135,166 +130,81 @@ export default function StoryModal({
           e.stopPropagation();
           onPrev();
         }}
-        style={{
-          // Hide the element on mobile screens (none), otherwise show it using flexbox layout (flex)
-          display: isMobile ? "none" : "flex",
-          background: "rgba(255, 255, 255, 0.2)",
-          border: "none",
-          color: "white",
-          fontSize: "24px",
-          width: "44px",
-          height: "44px",
-          borderRadius: "50%",
-          cursor: "pointer",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
+        className={styles.navbutton}
       >
         ‹
       </button>
 
-      {/* 2. WHITE CARD CONTAINER DIV: Main card that contains the header and the image */}
+      {/* Main Container Card */}
 
       {/* Renders equal-width multi-segment progress bars using
         hardware-accelerated // CSS transitions to smoothly track active
         playback without interface flickering */}
       <div
-        onClick={(e) => {
-          e.stopPropagation();
-        }}
-        style={{
-          backgroundColor: "#ffffff",
-          borderRadius: "12px",
-          border: "1px solid #dbdbdb",
-          width: "100%",
-          maxWidth: "400px",
-          overflow: "hidden",
-          fontFamily:
-            "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
-        }}
+        onClick={(e) => e.stopPropagation()}
+        className={styles.cardContainer}
       >
         <StoryProgressBar
           stories={stories}
           currentStoryIndex={currentStoryIndex}
           isAnimate={isAnimate}
         />
-
-        {/* 4. MAIN HEADER BAR DIV: Holds the user section on the left and the close button on the right */}
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "10px",
-            padding: "12px 16px",
-            fontWeight: "600",
-            fontSize: "14px",
-            color: "#000000",
-            justifyContent: "space-between",
-          }}
-        >
-          {/* 4. USER DETAILS WRAPPER DIV: Keeps the avatar photo and username aligned side-by-side in one line */}
-          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <img
-              src={
-                currentStory.avatar ? currentStory.avatar : localDefaultAvatar
-              }
-              alt="profile"
-              style={{
-                width: "32px",
-                height: "32px",
-                borderRadius: "50%",
-                objectFit: "cover",
-              }}
-            />
-
-            <span>{currentStory.name}</span>
-          </div>
+        {/* Main User Profile Header Bar */}
+        <div className={styles.headerBar}>
+          {/* Keeps the avatar photo and username aligned side-by-side 
+          in one line */}
+          <UserBadge
+            avatar={currentStory.avatar}
+            name={currentStory.name}
+            size={32}
+          />
 
           {/* Close button inside the main header bar */}
-          <button
-            onClick={onClose}
-            style={{
-              background: "none",
-              border: "none",
-              fontSize: "18px",
-              cursor: "pointer",
-              fontWeight: "bold",
-              color: "#262626",
-              padding: "0 4px",
-            }}
-          >
+          <button onClick={onClose} className={styles.closeButton}>
             ✕
           </button>
         </div>
-        {/* 5. New Wrapper Box DIV: Keeps absolute tap zones limited only to the image area */}
-        <div style={{ position: "relative", width: "100%" }}>
+        {/* Story Asset Frame Area:
+        Keeps absolute tap zones limited only to the image area */}
+        <div className={styles.imageWrapper}>
           <img
             src={currentStory.image}
             alt={currentStory.name}
-            style={{
-              width: "100%",
-              display: "block",
-              objectFit: "cover",
-              maxHeight: "70vh",
-            }}
+            className={styles.storyImage}
           />
           {/* Only show these hidden tap zones on mobile screen sizes */}
           {isMobile && (
             <>
-              {/* Invisible layer on the left 50% area to triggers the previous story */}
+              {/* Invisible layer on the left 50% area to triggers the 
+              previous story */}
               <div
                 onClick={(e) => {
                   e.stopPropagation();
                   onPrev();
                 }}
-                style={{
-                  position: "absolute",
-                  top: "0",
-                  left: "0",
-                  width: "50%",
-                  height: "100%",
-                  cursor: "pointer",
-                }}
+                className={`${styles.tapZone} ${styles.leftTap}`}
               />
 
-              {/* Invisible layer on the right 50% area to triggers the next story */}
+              {/* Invisible layer on the right 50% area to triggers 
+              the next story */}
               <div
                 onClick={(e) => {
                   e.stopPropagation();
                   onNext();
                 }}
-                style={{
-                  position: "absolute",
-                  top: "0",
-                  right: "0",
-                  width: "50%",
-                  height: "100%",
-                  cursor: "pointer",
-                }}
+                className={`${styles.tapZone} ${styles.rightTap}`}
               />
             </>
           )}
         </div>
       </div>
-      {/* Right (Next) Navigation Button */}
+      {/* Desktop Right Button */}
       <button
         onClick={(e) => {
           e.stopPropagation();
           onNext();
         }}
-        style={{
-          display: isMobile ? "none" : "flex",
-          background: "rgba(255, 255, 255, 0.2)",
-          border: "none",
-          color: "white",
-          fontSize: "24px",
-          width: "44px",
-          height: "44px",
-          borderRadius: "50%",
-          cursor: "pointer",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
+        className={styles.navbutton}
       >
         ›
       </button>
