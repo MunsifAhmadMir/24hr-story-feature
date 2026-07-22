@@ -1,9 +1,71 @@
+.barWrapper {
+  position: relative;
+  width: 100%;
+  max-width: 1126px; /* Aapke main container frame jitna lock kiya */
+  margin: 0 auto; /* Taake arrows stories ke sath hi center mein rahein */
+  display: flex;
+  align-items: center;
+}
+
+.navArrow {
+  position: absolute;
+  top: 40%;
+  transform: translateY(-50%);
+  z-index: 20;
+
+  /* Sizing and Shape */
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid var(--border-color);
+  background-color: var(--header-bg);
+  color: var(--text-color);
+
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25) !important;
+  transition:
+    transform 0.2s,
+    background-color 0.2s,
+    box-shadow 0.2s;
+}
+
+.navArrow:hover {
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35) !important;
+  background-color: var(--icon-hover) !important;
+}
+
+.leftArrow {
+  left: 20px;
+}
+
+.rightArrow {
+  right: 20px;
+}
+
+/* ── UI CONTROL: Mobile par arrows chupa dein ── */
+@media (max-width: 600px) {
+  .navArrow {
+    display: none !important; /* Mobile par user sirf touch swipe karega */
+  }
+}
+
 .scrollContainer {
   display: flex;
   gap: 12px;
   padding: 12px;
   overflow-x: auto;
   scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+
+.scrollContainer::-webkit-scrollbar {
+  height: 0px !important;
 }
 
 .plusButtonContainer {
@@ -32,5 +94,24 @@
 .label {
   font-size: 12px;
   margin-top: 6px;
-  color: #555555;
+  color: var(--text-color);
+}
+
+/* File ke bilkul aakhir mein jo block hai, usay is se replace karein: */
+[data-theme="dark"] .navArrow {
+  /* Background ko pehle se thoda light grey tone diya taake black background par pop kare */
+  background-color: #222225 !important;
+
+  /* Border ko thoda aur solid bright white opacity di */
+  border-color: rgba(255, 255, 255, 0.4) !important;
+
+  /* Text arrows ko pure sharp white kiya */
+  color: #ffffff !important;
+
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Hover karne par aur behtareen light reaction filter pop */
+[data-theme="dark"] .navArrow:hover {
+  background-color: #2d2d31 !important;
 }

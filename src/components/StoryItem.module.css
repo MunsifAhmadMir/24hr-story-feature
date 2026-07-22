@@ -15,7 +15,7 @@
   /*Makes border clear so gradient can show through First part 
   adds white gap, second adds Insta colors */
   background-image:
-    linear-gradient(white, white),
+    linear-gradient(var(--header-bg), var(--header-bg)),
     linear-gradient(45deg, #f99d1c, #da2f7f, #7c3cb5);
   background-origin: border-box;
   /* Stretches the gradient colors to fill the entire border area */
@@ -26,5 +26,5 @@
 .username {
   font-size: 12px;
   margin-top: 6px;
-  color: #555555;
+  color: var(--text-color);
 }
