@@ -56,7 +56,17 @@
   padding: 12px 16px;
   font-weight: 600;
   font-size: 14px;
+<<<<<<< Updated upstream
   color: #000000;
+=======
+
+  position: absolute;
+  top: 12px;
+  left: 0;
+  width: 100%;
+  box-sizing: border-box;
+  color: #ffffff !important;
+>>>>>>> Stashed changes
   justify-content: space-between;
 }
 

@@ -1,0 +1,330 @@
+:root {
+  --bg-color: #fafafa;
+  --header-bg: #ffffff;
+  --text-color: #1a1a1a;
+  --border-color: #eaeaea;
+  --icon-hover: #f3f4f6;
+}
+
+[data-theme="dark"] {
+  --bg-color: #0b0b0c;
+  --header-bg: #121214;
+  --text-color: #f3f4f6;
+  --border-color: #222225;
+  --icon-hover: #1f1f23;
+}
+
+/* Main Wrapper App Card */
+.appContainer {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 0;
+
+  background-color: var(--bg-color);
+  transition: background-color 0.3s ease;
+}
+
+[data-theme="dark"] .appContainer {
+  background-color: var(--bg-color);
+}
+
+.appFrame {
+  width: 100%;
+
+  max-width: 1126px;
+  min-height: 100vh;
+
+  background-color: var(--header-bg);
+
+  border-inline: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+}
+
+[data-theme="dark"] .appFrame {
+  box-shadow: none;
+}
+
+/* Modern Header Layout */
+.appHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  background-color: var(--header-bg);
+  border-bottom: 1px solid var(--border-color);
+  transition: background-color 0.3s ease;
+}
+
+/* Left Brand Side */
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  /*SMOOTH BUMP*/
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Hover par poora left brand area halka sa interact kare */
+.headerLeft:hover {
+  filter: brightness(1.05);
+}
+
+/* CLICK HONAY PAR CAMERA AUR TEXT DONO EK SATH BUMP KARENGE */
+.headerLeft:active {
+  transform: scale(0.94);
+}
+
+.brandLogo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* Font size property ab use nahi hogi kyonke SVG ka apna size control hai */
+}
+
+/* ── NEW CONTROL FOR CHOSEN LOGO VECTOR ── */
+.cameraLogoSvg {
+  width: 48px; /* Title text elements ke sath perfect size symmetry */
+  height: 48px;
+  display: block;
+
+  /* Halka sa soft glow shadow backend effect dark application k liye */
+  filter: drop-shadow(0px 2px 8px rgba(218, 47, 127, 0.25));
+  /* Sirf Hover ka tilt effect barkarar rakhne ke liye smooth transition */
+  transition: transform 0.3s ease;
+}
+
+/* Hover effect on logo check */
+.brandLogo:hover .cameraLogoSvg {
+  transform: rotate(-10deg) scale(1.08); /* Chota sa interactive lens tilt pop step */
+}
+
+.brandName {
+  display: inline-flex;
+  align-items: center;
+  gap: 1px; /* Letters ko halka sa aapas mein touch rakhne ke liye */
+  margin: 0;
+  padding: 0;
+}
+
+/* Base style for every paper-cut letter element */
+.letter {
+  font-family:
+    "Fredoka One",
+    system-ui,
+    -apple-system,
+    sans-serif;
+  font-size: 1.6rem; /* Scaled down for application header balance */
+  font-weight: 900;
+  position: relative;
+  display: inline-block;
+
+  /* PRECISE WHITE STROKE + 3D DEPTH SHADOW FOR APP GRAPHICS */
+  filter: drop-shadow(0.5px 0.5px 0px var(--header-bg))
+    drop-shadow(-0.5px -0.5px 0px var(--header-bg))
+    drop-shadow(1.5px 3px 4px rgba(0, 0, 0, 0.15));
+
+  transition: transform 0.2s ease;
+  cursor: pointer;
+}
+
+/* Hover effects dynamic bounce animations layer */
+.letter:hover {
+  transform: translateY(-3px) scale(1.06);
+  z-index: 50 !important;
+}
+
+/* ── INDIVIDUAL SYMMETRICAL APP THEME COLOURED SEGMENTS ── */
+
+/* Letter 'S' - Deep Orange Glow */
+.letter:nth-child(1) {
+  font-size: 2.1rem; /* S stays clean dominant display font */
+  color: #f99d1c;
+  z-index: 7;
+}
+
+/* Letter 't' - Warm Sunset Salmon */
+.letter:nth-child(2) {
+  color: #f1684c;
+  z-index: 6;
+  margin-left: -2px;
+}
+
+/* Letter 'o' - Rich Magenta Pink */
+.letter:nth-child(3) {
+  color: #da2f7f;
+  z-index: 5;
+  margin-left: -2px;
+}
+
+/* Letter 'r' - Deep Fuchsia */
+.letter:nth-child(4) {
+  color: #bc359c;
+  z-index: 4;
+}
+
+/* Letter 'i' - Electric Violet */
+.letter:nth-child(5) {
+  color: #9c3cb5;
+  z-index: 3;
+}
+
+/* Letter 'e' - Deep Royal Orchid */
+.letter:nth-child(6) {
+  color: #7c3cb5;
+  z-index: 2;
+  margin-left: -2px;
+}
+
+/* Letter 's' - Soft Plum Violet */
+.letter:nth-child(7) {
+  color: #642b99;
+  z-index: 1;
+  margin-left: -2px;
+}
+
+/* Right Side Theme Trigger */
+.iconBtn {
+  background: none;
+  border: 1px solid var(--border-color);
+  padding: 8px;
+  border-radius: 50%;
+  cursor: pointer;
+  color: #b3b3b3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.iconBtn:hover {
+  background-color: var(--icon-hover);
+  border-color: #da2f7f;
+  box-shadow: 0 0 10px rgba(218, 47, 127, 0.3);
+  transform: rotate(45deg);
+  color: #ffffff;
+}
+
+.iconBtn:active {
+  transform: scale(0.95);
+}
+
+.iconBtn svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* ── LOWER DASHBOARD PANEL STYLES ── */
+
+/* Khali jagah ko gherne wala background flexbox area */
+.dashboardArea {
+  flex-grow: 1; /* Yeh bachi hui saari khaali vertical space ko auto-fill kar lega */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 24px;
+  background-color: var(
+    --bg-color
+  ); /* Light mod mein off-white, dark mein jet black */
+  transition: background-color 0.3s ease;
+}
+
+/* Central layout block card container */
+.dashboardCard {
+  text-align: center;
+  max-width: 340px;
+  padding: 32px 24px;
+  background-color: var(--header-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.02);
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.dashboardIcon {
+  font-size: 3rem;
+  margin-bottom: 16px;
+}
+
+.dashboardTitle {
+  font-family: system-ui, sans-serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-color);
+  margin: 0 0 10px 0;
+}
+
+.dashboardDesc {
+  font-family: system-ui, sans-serif;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--text-color);
+  opacity: 0.6;
+  margin: 0 0 24px 0;
+}
+
+/* Active memory counter badge pill */
+.statusBadge {
+  display: inline-block;
+  padding: 8px 16px;
+  background-color: var(--icon-hover);
+  color: var(--text-color);
+  font-family: system-ui, sans-serif;
+  font-size: 0.8rem;
+  border-radius: 50px;
+  border: 1px solid var(--border-color);
+  vertical-align: middle;
+}
+
+.dashboardUploadBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  /* Layout sizing and spaces */
+  padding: 8px 18px;
+  margin-bottom: 20px;
+  margin-right: 12px;
+  border: none;
+  border-radius: 50px; /* Fully rounded premium pill layout */
+
+  /* Fonts setup */
+  font-family: system-ui, sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+
+  /* Standard Instagram theme gradient mix colors */
+  background: linear-gradient(45deg, #f99d1c, #da2f7f, #7c3cb5);
+  color: #ffffff; /* Text color always sharp white */
+
+  /* Smooth scale bounces filters transition effects */
+  box-shadow: 0 6px 14px rgba(218, 47, 127, 0.15);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    filter 0.2s ease;
+}
+
+/* Hover over effects scaling animations */
+.dashboardUploadBtn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.08); /* Halka sa glow tone filter pop */
+  box-shadow: 0 12px 24px rgba(218, 47, 127, 0.35);
+}
+
+/* Click and press down hardware bounce bounce animation */
+.dashboardUploadBtn:active {
+  transform: translateY(0) scale(0.96);
+}
+
+.dashboardUploadBtn svg {
+  width: 15px;
+  height: 15px;
+}

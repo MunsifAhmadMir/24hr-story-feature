@@ -1,25 +1,18 @@
 import styles from "./StoryProgressBar.module.css";
 import type { StoryType } from "../types/story";
 
+// ✅ THE FIX: Props ko bilkul sahi tarteeb di taake TypeScript error khatam ho jaye
 interface StoryProgressBarProps {
   stories: StoryType[];
   currentStoryIndex: number;
   isAnimate: boolean;
 }
 
-// ======================================================================================
-//  MAIN COMPONENT
-// ======================================================================================
-
 export default function StoryProgressBar({
   stories,
   currentStoryIndex,
   isAnimate,
 }: StoryProgressBarProps) {
-  // ====================================================================================
-  // SCREEN RENDER (RETURN)
-  // ====================================================================================
-
   return (
     <div className={styles.progressContainer}>
       {stories.map((storyItem, index) => {
@@ -41,6 +34,10 @@ export default function StoryProgressBar({
               className={fillClassName}
               style={{
                 width: barWidth,
+<<<<<<< Updated upstream
+=======
+                // Tezi se click karne par bars ka takraao khatam karne wala logic
+>>>>>>> Stashed changes
                 transition: index < currentStoryIndex ? "none" : undefined,
               }}
             />

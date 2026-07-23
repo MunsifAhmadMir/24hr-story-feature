@@ -49,10 +49,10 @@ export default function CreateStoryModal({
             className={styles.avatarSelect}
           >
             <option value="none">None (Default Icon)</option>
-            <option value="1">Avatar 1 (Female)</option>
-            <option value="7">Avatar 2 (Male)</option>
-            <option value="12">Avatar 3 (Cool)</option>
-            <option value="60">Avatar 4 (Tech)</option>
+            <option value="48">Avatar 1 (Female)</option>
+            <option value="12">Avatar 2 (Male)</option>
+            <option value="50">Avatar 3 (Cool)</option>
+            <option value="18">Avatar 4 (Tech)</option>
           </select>
         </div>
         {/* Action Buttons Row*/}

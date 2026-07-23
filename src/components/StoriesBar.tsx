@@ -1,5 +1,5 @@
 import StoryItem from "./StoryItem";
-import { useRef } from "react"; // <-- Create the Ref hook
+import { useRef, useEffect } from "react"; // <-- Create the Ref hook
 import type { StoryType } from "../types/story";
 import styles from "./StoriesBar.module.css";
 
@@ -50,6 +50,7 @@ export default function StoriesBar({
     onSelectStory(id);
   }
 
+<<<<<<< Updated upstream
   // Renders a single story item
   function renderStory(story: StoryType) {
     return (
@@ -66,6 +67,56 @@ export default function StoriesBar({
     }
   }
 
+=======
+  const scrollLeft = () => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollBy({ left: -200, behavior: "smooth" });
+    }
+  };
+
+  const scrollRight = () => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollBy({ left: 200, behavior: "smooth" });
+    }
+  };
+
+  useEffect(() => {
+    const handleGlobalTrigger = () => {
+      handlePlusClick(); // Yeh aapki purani bani hui native file click logic ko fire kar dega
+    };
+
+    window.addEventListener("trigger-story-upload", handleGlobalTrigger);
+    return () => {
+      window.removeEventListener("trigger-story-upload", handleGlobalTrigger);
+    };
+  }, []);
+
+  // ------------------------------------------
+  // 1. STORY CLICK & RENDER LOGIC
+  // ------------------------------------------
+  // Click handler for individual story circles to log action and notify parent App component
+  function handleStoryClick(id: number) {
+    // Send the clicked story's ID back up to the parent component to open the modal
+    onSelectStory(id);
+  }
+
+  // Renders a single story item
+  function renderStory(story: StoryType) {
+    return (
+      <StoryItem key={story.id} story={story} onStoryClick={handleStoryClick} />
+    );
+  }
+
+  // ------------------------------------------
+  // 2. FILE UPLOAD LOGIC (FileReader)
+  // ------------------------------------------
+  function handlePlusClick() {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  }
+
+>>>>>>> Stashed changes
   function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
     const files = event.target.files;
     if (files && files.length > 0) {
@@ -82,9 +133,12 @@ export default function StoriesBar({
       reader.onload = () => {
         const base64String = reader.result as string;
         onUploadStory(base64String);
+<<<<<<< Updated upstream
         if (fileInputRef.current) {
           fileInputRef.current.value = "";
         }
+=======
+>>>>>>> Stashed changes
       };
 
       // 2. ERROR CALLBACK: Fallback safety if the browser fails to process the file
@@ -95,6 +149,13 @@ export default function StoriesBar({
 
       // 3. ACTION TRIGGER: Turn on the scanner machine to process the file asynchronously
       reader.readAsDataURL(file);
+<<<<<<< Updated upstream
+=======
+
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+>>>>>>> Stashed changes
     }
   }
 
@@ -103,6 +164,7 @@ export default function StoriesBar({
   // ====================================================================================
 
   return (
+<<<<<<< Updated upstream
     // Horizontal scrollable container for story items
     <div
       // A flex container with spacing (gap) and padding
@@ -124,6 +186,41 @@ export default function StoriesBar({
       </div>
 
       {stories.map(renderStory)}
+=======
+    <div className={styles.barWrapper}>
+      <button
+        onClick={scrollLeft}
+        className={`${styles.navArrow} ${styles.leftArrow}`}
+      >
+        ‹
+      </button>
+      {/* Horizontal scrollable container for story items */}
+
+      <div ref={scrollContainerRef} className={styles.scrollContainer}>
+        {/* ---- NEW: PLUS BUTTON START ---- */}
+        <div onClick={handlePlusClick} className={styles.plusButtonContainer}>
+          {/* Hidden input element */}
+          <input
+            type="file"
+            ref={fileInputRef}
+            onChange={handleFileChange}
+            accept="image/*"
+            style={{ display: "none" }}
+          />
+
+          <div className={styles.plusCircle}>+</div>
+          <p className={styles.label}>Your Story</p>
+        </div>
+
+        {stories.map(renderStory)}
+      </div>
+      <button
+        onClick={scrollRight}
+        className={`${styles.navArrow} ${styles.rightArrow}`}
+      >
+        ›
+      </button>
+>>>>>>> Stashed changes
     </div>
   );
 }

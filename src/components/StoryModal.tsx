@@ -70,7 +70,11 @@ export default function StoryModal({
       }
       clearTimeout(storyTimeout);
     };
+<<<<<<< Updated upstream
   }, [currentStory.id, onNext]);
+=======
+  }, [currentStory.id]);
+>>>>>>> Stashed changes
 
   // ------------------------------------------
   //
