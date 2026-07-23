@@ -41,10 +41,7 @@ export default function StoryProgressBar({
               className={fillClassName}
               style={{
                 width: barWidth,
-                transition:
-                  index === currentStoryIndex && isAnimate
-                    ? "width 3000ms linear"
-                    : "none",
+                transition: index < currentStoryIndex ? "none" : undefined,
               }}
             />
           </div>

@@ -11,7 +11,7 @@ export default function UserBadge({
   avatar,
   name,
   size = 32,
-  textColor = "var(--text-color)",
+  textColor = "#000000",
 }: UserBadgeProps) {
   // Local code-based vector icon used as a fallback profile picture when 'avatar' is missing
   // It draws a clean gray silhouette without needing any internet image link

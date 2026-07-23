@@ -4,7 +4,7 @@ export const defaultStories: StoryType[] = [
   {
     id: 1,
     name: "Sara",
-    avatar: "https://i.pravatar.cc/100?img=48",
+    avatar: "https://i.pravatar.cc/100?img=1",
     image: "https://picsum.photos/id/1084/1080/1920",
   },
   {
@@ -34,25 +34,25 @@ export const defaultStories: StoryType[] = [
   {
     id: 6,
     name: "Anoosh",
-    avatar: "https://i.pravatar.cc/100?img=19",
+    avatar: "https://i.pravatar.cc/100?img=6",
     image: "https://picsum.photos/id/14/1080/1920",
   },
   {
     id: 7,
     name: "Orhan",
-    avatar: "https://i.pravatar.cc/100?img=50",
+    avatar: "https://i.pravatar.cc/100?img=7",
     image: "https://picsum.photos/id/1033/1080/1920",
   },
   {
     id: 8,
     name: "Memoona",
-    avatar: "https://i.pravatar.cc/100?img=47",
+    avatar: "https://i.pravatar.cc/100?img=8",
     image: "https://picsum.photos/id/1027/1080/1920",
   },
   {
     id: 9,
     name: "Zoha",
-    avatar: "https://i.pravatar.cc/100?img=45",
+    avatar: "https://i.pravatar.cc/100?img=9",
     image: "https://picsum.photos/id/1025/1080/1920",
   },
   {

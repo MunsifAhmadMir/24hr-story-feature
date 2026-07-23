@@ -46,21 +46,32 @@ export default function StoryModal({
 
   // FIXED: Warning aur Flicker khatam karne ke liye simple hardware-accelerated timers
   useEffect(() => {
-    setIsAnimate(false);
+    setIsAnimate(false); // Reset timeline line to 0% immediately
 
-    const animationTrigger = setTimeout(() => {
-      setIsAnimate(true);
-    }, 20);
+    let firstFrameId: number;
+    let secondFrameId: number;
 
+    firstFrameId = requestAnimationFrame(() => {
+      secondFrameId = requestAnimationFrame(() => {
+        setIsAnimate(true);
+      });
+    });
+
+    // Exact 3000ms timer to auto-advance the story layout
     const storyTimeout = setTimeout(() => {
       onNext();
     }, 3000);
 
+    // Safely destroy both animation threads and the timeout
     return () => {
-      clearTimeout(animationTrigger);
+      cancelAnimationFrame(firstFrameId);
+      if (secondFrameId) {
+        cancelAnimationFrame(secondFrameId);
+      }
       clearTimeout(storyTimeout);
     };
   }, [currentStory.id, onNext]);
+
   // ------------------------------------------
   //
   // ------------------------------------------
@@ -113,8 +124,6 @@ export default function StoryModal({
       onTouchEnd={handleTouchEnd}
       className={styles.overlay}
     >
-      <img src={currentStory.image} alt="" className={styles.blurBg} />
-
       {/* Desktop Left Button */}
       <button
         onClick={(e) => {
@@ -148,7 +157,6 @@ export default function StoryModal({
             avatar={currentStory.avatar}
             name={currentStory.name}
             size={32}
-            textColor="#ffffff"
           />
 
           {/* Close button inside the main header bar */}
