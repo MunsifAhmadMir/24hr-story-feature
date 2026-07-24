@@ -1,9 +1,65 @@
+/* FIXED: Main missing parent container that wraps everything horizontally */
+.barWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
 .scrollContainer {
   display: flex;
   gap: 12px;
-  padding: 12px;
+  padding: 12px 40px; /* FIXED: Side padding bar ki taake buttons circles ke oopar na charhein */
   overflow-x: auto;
   scroll-behavior: smooth;
+  width: 100%;
+}
+
+/* Hide standard horizontal scrollbar bar layout indicators */
+.scrollContainer::-webkit-scrollbar {
+  display: none;
+}
+
+/* FIXED: Base floating style configuration for navigation arrow indicators */
+.navArrow {
+  position: absolute;
+  top: 40%;
+  transform: translateY(-50%); /* Axis center calculation rule */
+  background: var(--icon-hover);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  font-size: 16px;
+  font-weight: bold;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.navArrow:hover {
+  background: var(--bg-color);
+  color: #da2f7f;
+  border-color: #da2f7f;
+  transform: translateY(-50%) scale(1.08);
+  box-shadow: 0 4px 16px rgba(218, 47, 127, 0.45);
+}
+
+/* FIXED: Left boundary pinning location */
+.leftArrow {
+  left: 12px;
+}
+
+/* FIXED: Right boundary pinning location */
+.rightArrow {
+  right: 12px;
 }
 
 .plusButtonContainer {
@@ -18,7 +74,7 @@
 .plusCircle {
   width: 56px;
   height: 56px;
-  border-radius: 50px;
+  border-radius: 50%; /* FIXED: changed 50px to 50% for standard circle sizing */
   display: flex;
   justify-content: center;
   align-items: center;

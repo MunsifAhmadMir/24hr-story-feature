@@ -11,8 +11,8 @@
   --shadow:
     rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
+  --sans: system-ui, "Segoe UI", Roboto, sans-serif;
+  --heading: system-ui, "Segoe UI", Roboto, sans-serif;
   --mono: ui-monospace, Consolas, monospace;
 
   font: 18px/145% var(--sans);
@@ -34,7 +34,8 @@
   :root {
     --text: #9ca3af;
     --text-h: #f3f4f6;
-    --bg: #16171d;
+    /* FIXED: Changed to pure black to perfectly match your premium dark mode layout */
+    --bg: #000000;
     --border: #2e303a;
     --code-bg: #1f2028;
     --accent: #c084fc;
@@ -50,13 +51,24 @@
   }
 }
 
+/* FIXED: Structural viewport rules to expand canvas edge-to-edge smoothly */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh;
+}
+
 #root {
-  width: 1126px;
+  /* FIXED: 1126px dynamic restriction removed permanently */
+  width: 100%;
   max-width: 100%;
-  margin: 0 auto;
+  margin: 0;
   text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
+  /* FIXED: Border inline line removed so margins blend seamlessly */
+  border-inline: none;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
@@ -64,6 +76,7 @@
 
 body {
   margin: 0;
+  background-color: var(--bg);
 }
 
 h1,

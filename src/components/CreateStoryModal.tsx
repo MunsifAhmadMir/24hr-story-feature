@@ -29,23 +29,30 @@ export default function CreateStoryModal({
         <h2 className={styles.title}>Create Your Story</h2>
 
         {/* Live Preview Box */}
-        <img src={tempImage} alt="Preview" className={styles.previewImage} />
+        <img
+          src={tempImage}
+          alt="Selected story preview"
+          className={styles.previewImage}
+        />
 
         {/* Name Input field */}
         <input
           type="text"
           placeholder="Enter your name..."
           value={inputName}
-          onChange={(e) => onNameChange(e.target.value)}
+          onChange={(event) => onNameChange(event.target.value)}
           className={styles.nameInput}
         />
 
         {/* Avatar Dropdown Wrapper*/}
         <div className={styles.dropdownRow}>
-          <label className={styles.dropdownLabel}>Select Profile Avatar</label>
+          <label htmlFor="avatar-select" className={styles.dropdownLabel}>
+            Select Profile Avatar
+          </label>
           <select
+            id="avatar-select"
             value={selectedAvatar}
-            onChange={(e) => onAvatarChange(e.target.value)}
+            onChange={(event) => onAvatarChange(event.target.value)}
             className={styles.avatarSelect}
           >
             <option value="none">None (Default Icon)</option>

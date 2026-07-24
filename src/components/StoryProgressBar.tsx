@@ -34,10 +34,7 @@ export default function StoryProgressBar({
               className={fillClassName}
               style={{
                 width: barWidth,
-<<<<<<< Updated upstream
-=======
                 // Tezi se click karne par bars ka takraao khatam karne wala logic
->>>>>>> Stashed changes
                 transition: index < currentStoryIndex ? "none" : undefined,
               }}
             />

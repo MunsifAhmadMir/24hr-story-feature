@@ -70,11 +70,7 @@ export default function StoryModal({
       }
       clearTimeout(storyTimeout);
     };
-<<<<<<< Updated upstream
   }, [currentStory.id, onNext]);
-=======
-  }, [currentStory.id]);
->>>>>>> Stashed changes
 
   // ------------------------------------------
   //
@@ -128,6 +124,8 @@ export default function StoryModal({
       onTouchEnd={handleTouchEnd}
       className={styles.overlay}
     >
+      <img src={currentStory.image} alt="" className={styles.blurBg} />
+
       {/* Desktop Left Button */}
       <button
         onClick={(e) => {
@@ -161,6 +159,7 @@ export default function StoryModal({
             avatar={currentStory.avatar}
             name={currentStory.name}
             size={32}
+            textColor="#ffffff"
           />
 
           {/* Close button inside the main header bar */}

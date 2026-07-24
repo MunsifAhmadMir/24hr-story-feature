@@ -52,7 +52,7 @@ export const defaultStories: StoryType[] = [
   {
     id: 9,
     name: "Zoha",
-    avatar: "https://i.pravatar.cc/100?img=9",
+    avatar: "https://i.pravatar.cc/100?img=47",
     image: "https://picsum.photos/id/1025/1080/1920",
   },
   {

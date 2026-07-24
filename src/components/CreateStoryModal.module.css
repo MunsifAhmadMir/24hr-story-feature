@@ -9,25 +9,27 @@
   justify-content: center;
   align-items: center;
   z-index: 2000;
-  color: #ffffff;
 }
 
 .modalCard {
-  background-color: #ffffff;
-  color: #333333;
+  /* FIXED: Back to your clean variables structure */
+  background-color: var(--header-bg);
   padding: 25px;
   border-radius: 12px;
-  width: 350px;
+  /* FIXED: Width ko safe 380px kiya taake dynamic names split na hon text horizontal line me rahay */
+  width: 380px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
 }
 
 .title {
   margin-top: 0;
   font-size: 18px;
   margin-bottom: 15px;
+  color: var(--text-color); /* Strict sync with your active theme toggles */
 }
 
 .previewImage {
@@ -36,17 +38,25 @@
   object-fit: cover;
   border-radius: 8px;
   margin-bottom: 15px;
-  border: 2px solid #dddddd;
+  border: 2px solid var(--border-color);
 }
 
 .nameInput {
   width: 100%;
   padding: 10px;
   border-radius: 6px;
-  border: 1px solid #cccccc;
+  background-color: var(--bg-color);
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
   font-size: 14px;
   margin-bottom: 15px;
-  box-sizing: border-box; /* Ensures padding does not break full-width inputs */
+  box-sizing: border-box;
+}
+
+/* Restores soft visibility for the placeholder styling text */
+.nameInput::placeholder {
+  color: var(--text-color);
+  opacity: 0.4;
 }
 
 .dropdownRow {
@@ -55,19 +65,29 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
+  gap: 10px; /* Label aur select dropdown ke beech safe side bridge spacing */
 }
 
 .dropdownLabel {
   font-size: 14px;
-  color: #666666;
+  color: var(--text-color);
+  white-space: nowrap; /* CRITICAL FIX: Yeh line text ko split ya tootne se sakhti se rokegi */
 }
 
 .avatarSelect {
   padding: 8px;
   border-radius: 6px;
-  border: 1px solid #cccccc;
+  background-color: var(--bg-color);
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
   font-size: 14px;
   cursor: pointer;
+}
+
+/* Fixes individual options background during system drop menu reveal actions */
+.avatarSelect option {
+  background-color: var(--header-bg);
+  color: var(--text-color);
 }
 
 .buttonGroup {
@@ -79,21 +99,49 @@
 .btnBase {
   flex: 1;
   padding: 10px;
-  border-radius: 6px;
+  border-radius: 50px;
   cursor: pointer;
   font-weight: bold;
   font-size: 14px;
 }
 
 .btnCancel {
-  border: 1px solid #cccccc;
-  background-color: #eeeeee;
-  color: #333333;
+  border: 1px solid var(--border-color);
+  background-color: var(--icon-hover);
+  color: var(--text-color);
 }
 
 .btnPublish {
   border: none;
-  border-color: #0095f6;
-  background-color: #0095f6;
+  background: linear-gradient(
+    45deg,
+    #f99d1c,
+    #da2f7f,
+    #7c3cb5
+  ); /* Pure Instagram active style */
   color: #ffffff;
+  box-shadow: 0 4px 12px rgba(218, 47, 127, 0.2);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); /* Made transition smooth matching header scales */
+}
+
+/* HIGH-END INTERACTION ADDED FOR SYMMETRY */
+.btnPublish:hover {
+  transform: translateY(
+    -2px
+  ); /* Soft upward push matching dashboard pill balance */
+  filter: brightness(1.08); /* Glow accent pop filter */
+
+  /* FIXED HOVER GLOW: Expands the trademark pink signature shadow smoothly over the dark sheet background */
+  box-shadow: 0 8px 20px rgba(218, 47, 127, 0.45);
+}
+
+/* HIGH-END INTERACTION ADDED FOR SYMMETRY */
+.btnPublish:hover {
+  transform: translateY(
+    -2px
+  ); /* Soft upward push matching dashboard pill balance */
+  filter: brightness(1.08); /* Glow accent pop filter */
+
+  /* FIXED HOVER GLOW: Expands the trademark pink signature shadow smoothly over the dark sheet background */
+  box-shadow: 0 8px 20px rgba(218, 47, 127, 0.45);
 }

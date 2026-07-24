@@ -39,35 +39,11 @@ export default function StoriesBar({
   // ------------------------------------------
   // HOOKS & REFS (Always at the top level!)
   // ------------------------------------------
+
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // ------------------------------------------
-  // 1. STORY CLICK & RENDER LOGIC
-  // ------------------------------------------
-  // Click handler for individual story circles to log action and notify parent App component
-  function handleStoryClick(id: number) {
-    // Send the clicked story's ID back up to the parent component to open the modal
-    onSelectStory(id);
-  }
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-<<<<<<< Updated upstream
-  // Renders a single story item
-  function renderStory(story: StoryType) {
-    return (
-      <StoryItem key={story.id} story={story} onStoryClick={handleStoryClick} />
-    );
-  }
-
-  // ------------------------------------------
-  // 2. FILE UPLOAD LOGIC (FileReader)
-  // ------------------------------------------
-  function handlePlusClick() {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
-    }
-  }
-
-=======
   const scrollLeft = () => {
     if (scrollContainerRef.current) {
       scrollContainerRef.current.scrollBy({ left: -200, behavior: "smooth" });
@@ -116,7 +92,6 @@ export default function StoriesBar({
     }
   }
 
->>>>>>> Stashed changes
   function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
     const files = event.target.files;
     if (files && files.length > 0) {
@@ -133,12 +108,9 @@ export default function StoriesBar({
       reader.onload = () => {
         const base64String = reader.result as string;
         onUploadStory(base64String);
-<<<<<<< Updated upstream
         if (fileInputRef.current) {
           fileInputRef.current.value = "";
         }
-=======
->>>>>>> Stashed changes
       };
 
       // 2. ERROR CALLBACK: Fallback safety if the browser fails to process the file
@@ -149,13 +121,6 @@ export default function StoriesBar({
 
       // 3. ACTION TRIGGER: Turn on the scanner machine to process the file asynchronously
       reader.readAsDataURL(file);
-<<<<<<< Updated upstream
-=======
-
-      if (fileInputRef.current) {
-        fileInputRef.current.value = "";
-      }
->>>>>>> Stashed changes
     }
   }
 
@@ -164,29 +129,6 @@ export default function StoriesBar({
   // ====================================================================================
 
   return (
-<<<<<<< Updated upstream
-    // Horizontal scrollable container for story items
-    <div
-      // A flex container with spacing (gap) and padding
-      className={styles.scrollContainer}
-    >
-      {/* ---- NEW: PLUS BUTTON START ---- */}
-      <div onClick={handlePlusClick} className={styles.plusButtonContainer}>
-        {/* Hidden input element */}
-        <input
-          type="file"
-          ref={fileInputRef}
-          onChange={handleFileChange}
-          accept="image/*"
-          style={{ display: "none" }}
-        />
-
-        <div className={styles.plusCircle}>+</div>
-        <p className={styles.label}>Your Story</p>
-      </div>
-
-      {stories.map(renderStory)}
-=======
     <div className={styles.barWrapper}>
       <button
         onClick={scrollLeft}
@@ -220,7 +162,6 @@ export default function StoriesBar({
       >
         ›
       </button>
->>>>>>> Stashed changes
     </div>
   );
 }

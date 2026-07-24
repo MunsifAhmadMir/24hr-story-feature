@@ -26,10 +26,6 @@
   transition: background-color 0.3s ease;
 }
 
-[data-theme="dark"] .appContainer {
-  background-color: var(--bg-color);
-}
-
 .appFrame {
   width: 100%;
 
@@ -68,12 +64,12 @@
   transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* Hover par poora left brand area halka sa interact kare */
+/* The entire left brand area should interact slightly on hover */
 .headerLeft:hover {
   filter: brightness(1.05);
 }
 
-/* CLICK HONAY PAR CAMERA AUR TEXT DONO EK SATH BUMP KARENGE */
+/* Upon clicking, both the camera and text will bump simultaneously */
 .headerLeft:active {
   transform: scale(0.94);
 }
@@ -82,7 +78,6 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  /* Font size property ab use nahi hogi kyonke SVG ka apna size control hai */
 }
 
 /* ── NEW CONTROL FOR CHOSEN LOGO VECTOR ── */
@@ -219,24 +214,24 @@
 
 /* ── LOWER DASHBOARD PANEL STYLES ── */
 
-/* Khali jagah ko gherne wala background flexbox area */
+/* Background flexbox area surrounding the empty space */
 .dashboardArea {
-  flex-grow: 1; /* Yeh bachi hui saari khaali vertical space ko auto-fill kar lega */
+  flex-grow: 1; /* It will automatically fill all the remaining empty vertical space */
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 40px 24px;
   background-color: var(
     --bg-color
-  ); /* Light mod mein off-white, dark mein jet black */
+  ); /* Light mod => off-white, dark => jet black */
   transition: background-color 0.3s ease;
 }
 
 /* Central layout block card container */
 .dashboardCard {
   text-align: center;
-  max-width: 340px;
-  padding: 32px 24px;
+  max-width: 400px;
+  padding: 40px 28px;
   background-color: var(--header-bg);
   border: 1px solid var(--border-color);
   border-radius: 20px;
@@ -248,37 +243,54 @@
 
 .dashboardIcon {
   font-size: 3rem;
-  margin-bottom: 16px;
+  margin-bottom: 28px;
 }
 
 .dashboardTitle {
   font-family: system-ui, sans-serif;
-  font-size: 1.25rem;
-  font-weight: 600;
+  font-size: 1.35rem;
+  font-weight: 700;
   color: var(--text-color);
-  margin: 0 0 10px 0;
+  margin: 0 0 12px 0;
+  letter-spacing: -0.2px;
 }
 
 .dashboardDesc {
   font-family: system-ui, sans-serif;
-  font-size: 0.85rem;
-  line-height: 1.5;
+  font-size: 0.88rem;
+  line-height: 1.55;
   color: var(--text-color);
-  opacity: 0.6;
-  margin: 0 0 24px 0;
+  opacity: 0.65;
+  margin: 0 0 32px 0;
+}
+
+.buttonGroupRow {
+  display: flex;
+  justify-content: center;
+  align-items: center; /* Exact vertical baseline centering */
+  gap: 12px;
+  width: 100%;
 }
 
 /* Active memory counter badge pill */
 .statusBadge {
-  display: inline-block;
-  padding: 8px 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  min-width: 150px;
+  height: 40px;
   background-color: var(--icon-hover);
   color: var(--text-color);
-  font-family: system-ui, sans-serif;
-  font-size: 0.8rem;
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
   border-radius: 50px;
   border: 1px solid var(--border-color);
-  vertical-align: middle;
+  box-sizing: border-box;
 }
 
 .dashboardUploadBtn {
@@ -288,15 +300,19 @@
   gap: 6px;
 
   /* Layout sizing and spaces */
-  padding: 8px 18px;
-  margin-bottom: 20px;
-  margin-right: 12px;
+  padding: 10px 20px;
+  min-width: 150px;
+  height: 40px;
+  margin: 0;
   border: none;
   border-radius: 50px; /* Fully rounded premium pill layout */
 
   /* Fonts setup */
-  font-family: system-ui, sans-serif;
-  font-size: 0.8rem;
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
+  font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
 
@@ -310,12 +326,13 @@
     transform 0.2s ease,
     box-shadow 0.2s ease,
     filter 0.2s ease;
+  box-sizing: border-box;
 }
 
 /* Hover over effects scaling animations */
 .dashboardUploadBtn:hover {
   transform: translateY(-2px);
-  filter: brightness(1.08); /* Halka sa glow tone filter pop */
+  filter: brightness(1.08); /* Light glow tone filter effect*/
   box-shadow: 0 12px 24px rgba(218, 47, 127, 0.35);
 }
 

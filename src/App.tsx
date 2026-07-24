@@ -4,74 +4,36 @@ import type { StoryType } from "./types/story";
 import StoryModal from "./components/StoryModal";
 import { defaultStories } from "./data/defaultStories";
 import CreateStoryModal from "./components/CreateStoryModal";
-<<<<<<< Updated upstream
-=======
 import styles from "./App.module.css";
 import { FiSun, FiMoon } from "react-icons/fi";
->>>>>>> Stashed changes
-
-// ======================================================================================
-/**
- * MAIN APP COMPONENT
- *
- * Purpose: Acts as the root feed container, managing the list of stories, new user
- * uploads, and dynamic story view switching (modals).
- *
- * Key Features:
- * 1. Safe Array Updates: Implements functional prevStories updates to safely handle
- *    asynchronous base64 uploads without data race conditions.
- * 2. Carousel Traversal: Computes runtime pointers (index offsets) dynamically to map
- *    the current modal snapshot with 'next' and 'previous' navigation controls.
- * 3. Defensive Fallbacks: Implements an active memory guard clause to gracefully absorb
- *    state mismatches instead of hard-crashing the view framework.
- */
-// ======================================================================================
 
 export default function App() {
-  // ------------------------------------------
-  // HOOKS & STATES (Always at the top level!)
-  // ------------------------------------------
+  const [theme, setTheme] = useState<"light" | "dark">(() => {
+    return (localStorage.getItem("app-theme") as "light" | "dark") || "light";
+  });
 
-  // Track which story is currently open. 'null' means no story is active/open.
   const [activeStoryId, setActiveStoryId] = useState<null | number>(null);
-
   const [tempImage, setTempImage] = useState<string | null>(null);
   const [inputName, setInputName] = useState("");
   const [selectedAvatar, setSelectedAvatar] = useState("none");
 
   const [stories, setStories] = useState<StoryType[]>(() => {
     const savedStories = localStorage.getItem("insta_stories");
-
     if (savedStories) {
       const parsedStories: StoryType[] = JSON.parse(savedStories);
-
-      // TODO: Temporary test configuration - Set expiry interval to 10 seconds (10 * 1000) to
-      // verify automatic cleanup behavior.
-      const twentyFourHoursInMs = 10 * 1000;
+      const twentyFourHoursInMs = 24 * 60 * 60 * 1000;
       const currentTime = Date.now();
 
-      // Filter out stories that are older than 24 hours
-      const validStories = parsedStories.filter((story) => {
-        // Agar story ke paas 'createdAt' nahi hai (Default Mock Stories), toh usay rakho
+      return parsedStories.filter((story) => {
         if (!story.createdAt) return true;
-
-        // Check karo ke kya time difference 24 ghante se kam hai
-        const isStillValid =
-          currentTime - story.createdAt < twentyFourHoursInMs;
-        return isStillValid;
+        return currentTime - story.createdAt < twentyFourHoursInMs;
       });
-
-      return validStories;
     } else {
-      // Default dummy stories array mapping...
       return defaultStories;
     }
   });
 
   useEffect(() => {
-<<<<<<< Updated upstream
-    localStorage.setItem("insta_stories", JSON.stringify(stories));
-=======
     document.documentElement.setAttribute("data-theme", theme);
     localStorage.setItem("app-theme", theme);
   }, [theme]);
@@ -85,7 +47,6 @@ export default function App() {
       localStorage.setItem("insta_stories", JSON.stringify(stories));
     } catch (error) {
       console.error("Storage full!", error);
-
       if (stories.length > 2) {
         const trimmedStories = stories.slice(0, 2);
         setStories(trimmedStories);
@@ -94,36 +55,15 @@ export default function App() {
         );
       }
     }
->>>>>>> Stashed changes
   }, [stories]);
-
-  // ------------------------------------------
-  // RUNTIME POINTER CALCULATIONS
-  // ------------------------------------------
 
   const currentStory = stories.find((story) => story.id === activeStoryId);
 
-  // ------------------------------------------
-  // 1. STORY UPLOAD & CAROUSEL TRAVERSAL LOGIC
-  // ------------------------------------------
-
-  /**
-   * HANDLER: Base64 Media Push
-   * Assembles a structured type object block for custom files and safely prepends it
-   * to the head of the current global dataset list using a real-time memory snapshot.
-   */
-
-  // ------------------------------------------
-  //
-  // ------------------------------------------
-
   const handleFilePicked = (base64String: string) => {
-    // Formula to calculate the size of a Base64 string in bits:
     const stringLength = base64String.length - (base64String.indexOf(",") + 1);
     const sizeInBytes = (stringLength * 3) / 4;
     const sizeInMB = sizeInBytes / (1024 * 1024);
 
-    //Apply a limit if the image is larger than 1.5 MB
     if (sizeInMB > 1.5) {
       alert(
         "The image is too large! Please select an image smaller than 1.5 MB",
@@ -139,7 +79,7 @@ export default function App() {
     const finalAvatarUrl =
       selectedAvatar === "none"
         ? ""
-        : `https://i.pravatar.cc/100?img=${selectedAvatar}`;
+        : `https://i.pravatar.cc/150?img=${selectedAvatar}`;
 
     const newStory: StoryType = {
       id: Date.now(),
@@ -150,13 +90,11 @@ export default function App() {
     };
 
     setStories((prevStories) => [newStory, ...prevStories]);
-
     setTempImage(null);
     setInputName("");
     setSelectedAvatar("none");
   };
 
-  // Traverses forward inside the stories array collection or closes when list boundary ends
   const handleNextStory = useCallback(() => {
     const currentIndex = stories.findIndex((s) => s.id === activeStoryId);
     if (currentIndex < stories.length - 1) {
@@ -164,9 +102,8 @@ export default function App() {
     } else {
       setActiveStoryId(null);
     }
-  }, [activeStoryId, stories]); // Explicit dependencies for clean reference tracking
+  }, [activeStoryId, stories]);
 
-  // Traverses backward inside the list collection to display the previous memory index
   const handlePrevStory = useCallback(() => {
     const currentIndex = stories.findIndex((s) => s.id === activeStoryId);
     if (currentIndex > 0) {
@@ -174,28 +111,10 @@ export default function App() {
     }
   }, [activeStoryId, stories]);
 
-  // ==========================================
-  // SCREEN RENDER (RETURN)
-  // ==========================================
-
   return (
-<<<<<<< Updated upstream
-    <div>
-      <h1>Stories App</h1>
-
-      {/* Horizontal horizontal list layer block with uploaded asset receivers  */}
-      <StoriesBar
-        onSelectStory={setActiveStoryId}
-        stories={stories}
-        onUploadStory={handleFilePicked}
-      />
-
-=======
     <div className={styles.appContainer}>
       <div className={styles.appFrame}>
-        {/* MODERN HEADER SECTION */}
         <header className={styles.appHeader}>
-          {/* Left: Branding Layout */}
           <div
             className={styles.headerLeft}
             onClick={() => {
@@ -204,7 +123,6 @@ export default function App() {
             }}
             title="Go to Home"
           >
-            {/* Camera Logo Icon Area */}
             <span className={styles.brandLogo}>
               <svg
                 className={styles.cameraLogoSvg}
@@ -212,7 +130,6 @@ export default function App() {
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
               >
-                {/* Outer Technical/Circuit Background Lines */}
                 <path
                   d="M40 15H55V22H40V15Z"
                   stroke="url(#instaGradient)"
@@ -225,8 +142,6 @@ export default function App() {
                   strokeWidth="1.5"
                   strokeLinecap="round"
                 />
-
-                {/* Main Dynamic Tripod/Base Lines */}
                 <line
                   x1="40"
                   y1="55"
@@ -261,8 +176,6 @@ export default function App() {
                   stroke="url(#instaGradient)"
                   strokeWidth="2"
                 />
-
-                {/* Central Focus Lens Element */}
                 <circle
                   cx="50"
                   cy="46"
@@ -284,8 +197,6 @@ export default function App() {
                   strokeWidth="1.5"
                   strokeLinecap="round"
                 />
-
-                {/* Side Speed Trails (Glow Lines) */}
                 <line
                   x1="72"
                   y1="40"
@@ -304,8 +215,6 @@ export default function App() {
                   strokeWidth="2"
                   strokeLinecap="round"
                 />
-
-                {/* ── THE GRADIENT DEFINITION MACHINE ── */}
                 <defs>
                   <linearGradient
                     id="instaGradient"
@@ -321,8 +230,6 @@ export default function App() {
                 </defs>
               </svg>
             </span>
-
-            {/* ── NEW SPLIT TEXT VIEW STRINGS FOR PAPER-CUT DESIGN ── */}
             <h1 className={styles.brandName} aria-label="Stories">
               <span className={styles.letter}>S</span>
               <span className={styles.letter}>t</span>
@@ -333,8 +240,6 @@ export default function App() {
               <span className={styles.letter}>s</span>
             </h1>
           </div>
-
-          {/* Right: Modern Mode Toggle Button */}
           <button
             onClick={toggleTheme}
             className={styles.iconBtn}
@@ -344,7 +249,6 @@ export default function App() {
           </button>
         </header>
 
-        {/* Horizontal horizontal list layer block with uploaded asset receivers  */}
         <StoriesBar
           onSelectStory={setActiveStoryId}
           stories={stories}
@@ -359,39 +263,36 @@ export default function App() {
               Upload your favorite images as ephemeral stories. Photos will
               automatically clear from local memory after 24 hours.
             </p>
-
-            <button
-              onClick={() => {
-                // Yeh ek custom global event fire karega jise StoriesBar sun raha hoga
-                window.dispatchEvent(new Event("trigger-story-upload"));
-              }}
-              className={styles.dashboardUploadBtn}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="2.5"
-                stroke="currentColor"
+            <div className={styles.buttonGroupRow}>
+              <button
+                onClick={() => {
+                  window.dispatchEvent(new Event("trigger-story-upload"));
+                }}
+                className={styles.dashboardUploadBtn}
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M12 4.5v15m7.5-7.5h-15"
-                />
-              </svg>
-              Upload Story
-            </button>
-
-            {/* Real-time active stories dynamic indicator code */}
-            <div className={styles.statusBadge}>
-              Active Stories: <strong>{stories.length}</strong>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="2.5"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M12 4.5v15m7.5-7.5h-15"
+                  />
+                </svg>
+                Upload Story
+              </button>
+              <div className={styles.statusBadge}>
+                Active Stories: {stories.length}
+              </div>
             </div>
           </div>
         </div>
       </div>
->>>>>>> Stashed changes
-      {/* Conditional Rendering modal viewport context activation overlay */}
+
       {currentStory && (
         <StoryModal
           currentStory={currentStory}
@@ -409,7 +310,11 @@ export default function App() {
           selectedAvatar={selectedAvatar}
           onNameChange={setInputName}
           onAvatarChange={setSelectedAvatar}
-          onCancel={() => setTempImage(null)}
+          onCancel={() => {
+            setTempImage(null);
+            setSelectedAvatar("none");
+            setInputName("");
+          }}
           onPublish={handlePublishStory}
         />
       )}

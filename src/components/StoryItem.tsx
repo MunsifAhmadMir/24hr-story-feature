@@ -17,6 +17,14 @@ export default function StoryItem({ story, onStoryClick }: StoryItemProps) {
   // It draws a clean gray silhouette without needing any internet image link
   const localDefaultAvatar = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23dbdbdb"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>`;
 
+  /* AUTOMATIC SHIELD FILTER: Fires instantly if network data profile image crashes or returns 404 */
+  const handleImageError = (
+    event: React.SyntheticEvent<HTMLImageElement, Event>,
+  ) => {
+    event.currentTarget.src =
+      localDefaultAvatar; /* Swaps broken url layout links with native vector asset */
+  };
+
   return (
     <div
       onClick={function () {
@@ -32,6 +40,9 @@ export default function StoryItem({ story, onStoryClick }: StoryItemProps) {
         alt={story.name}
         // Sets circle size, border, and padding for the avatar (i.e. Circular avatar styling)
         className={styles.avatarRing}
+        onError={
+          handleImageError
+        } /* FIXED: Restores full crash immunity for user avatar circles */
       />
       {/* Displays the user's name */}
       <p className={styles.username}>{story.name} </p>
