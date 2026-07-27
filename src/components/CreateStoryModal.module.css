@@ -1,3 +1,7 @@
+/* ==========================================================
+   Full Screen Overlay
+   Darkens the background and centers the modal
+   ========================================================== */
 .overlay {
   position: fixed;
   top: 0;
@@ -11,12 +15,16 @@
   z-index: 2000;
 }
 
+/* ==========================================================
+   Main Modal Card
+   Story creation form (primary container)
+   ========================================================== */
 .modalCard {
-  /* FIXED: Back to your clean variables structure */
   background-color: var(--header-bg);
   padding: 25px;
   border-radius: 12px;
-  /* FIXED: Width ko safe 380px kiya taake dynamic names split na hon text horizontal line me rahay */
+  /* The width is set so that the content fits comfortably
+     and the text does not wrap unnecessarily.  */
   width: 380px;
   display: flex;
   flex-direction: column;
@@ -25,13 +33,14 @@
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
 }
 
+/* Modal heading */
 .title {
-  margin-top: 0;
+  margin-top: 0 0 15px;
   font-size: 18px;
-  margin-bottom: 15px;
-  color: var(--text-color); /* Strict sync with your active theme toggles */
+  color: var(--text-color); /* Strict sync with active theme toggles */
 }
 
+/* Story image preview */
 .previewImage {
   width: 120px;
   height: 120px;
@@ -41,6 +50,7 @@
   border: 2px solid var(--border-color);
 }
 
+/* User name input field */
 .nameInput {
   width: 100%;
   padding: 10px;
@@ -53,27 +63,30 @@
   box-sizing: border-box;
 }
 
-/* Restores soft visibility for the placeholder styling text */
+/* To give the placeholder a soft appearance */
 .nameInput::placeholder {
   color: var(--text-color);
   opacity: 0.4;
 }
 
+/* Layout for avatar labels and drop-downs */
 .dropdownRow {
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
-  gap: 10px; /* Label aur select dropdown ke beech safe side bridge spacing */
+  gap: 10px; /* Safe side bridge distance between the Select Dropdown & Label*/
 }
 
+/* Dropdown label */
 .dropdownLabel {
   font-size: 14px;
   color: var(--text-color);
-  white-space: nowrap; /* CRITICAL FIX: Yeh line text ko split ya tootne se sakhti se rokegi */
+  white-space: nowrap; /* Keeps the label on a single line */
 }
 
+/* Avatar selection dropdown */
 .avatarSelect {
   padding: 8px;
   border-radius: 6px;
@@ -84,18 +97,20 @@
   cursor: pointer;
 }
 
-/* Fixes individual options background during system drop menu reveal actions */
+/* Keeps dropdown options in sync with the active theme */
 .avatarSelect option {
   background-color: var(--header-bg);
   color: var(--text-color);
 }
 
+/* Action buttons container */
 .buttonGroup {
   display: flex;
   gap: 10px;
   width: 100%;
 }
 
+/* Shared styling of both buttons */
 .btnBase {
   flex: 1;
   padding: 10px;
@@ -105,43 +120,99 @@
   font-size: 14px;
 }
 
+/* Cancel button */
 .btnCancel {
   border: 1px solid var(--border-color);
   background-color: var(--icon-hover);
   color: var(--text-color);
 }
 
+/* Publish Story button */
 .btnPublish {
   border: none;
-  background: linear-gradient(
-    45deg,
-    #f99d1c,
-    #da2f7f,
-    #7c3cb5
-  ); /* Pure Instagram active style */
+  background: linear-gradient(45deg, #f99d1c, #da2f7f, #7c3cb5);
+
   color: #ffffff;
   box-shadow: 0 4px 12px rgba(218, 47, 127, 0.2);
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); /* Made transition smooth matching header scales */
 }
 
-/* HIGH-END INTERACTION ADDED FOR SYMMETRY */
+/* Hover on => lift & glow effect */
 .btnPublish:hover {
   transform: translateY(
     -2px
   ); /* Soft upward push matching dashboard pill balance */
   filter: brightness(1.08); /* Glow accent pop filter */
-
-  /* FIXED HOVER GLOW: Expands the trademark pink signature shadow smoothly over the dark sheet background */
-  box-shadow: 0 8px 20px rgba(218, 47, 127, 0.45);
+  box-shadow: 0 8px 20px rgba(218, 47, 127, 0.45); /* Expands the trademark pink signature shadow smoothly over the dark sheet background */
 }
 
-/* HIGH-END INTERACTION ADDED FOR SYMMETRY */
-.btnPublish:hover {
-  transform: translateY(
-    -2px
-  ); /* Soft upward push matching dashboard pill balance */
-  filter: brightness(1.08); /* Glow accent pop filter */
+/* ===========================
+   Mobile Responsive (<= 480px)
+   =========================== */
+@media (max-width: 480px) {
+  /* The mobile will allow overlay safe padding and scrolling */
+  .overlay {
+    padding: 20px;
+    box-sizing: border-box;
+    align-items: center;
+    justify-content: center;
+    overflow-y: auto;
+  }
 
-  /* FIXED HOVER GLOW: Expands the trademark pink signature shadow smoothly over the dark sheet background */
-  box-shadow: 0 8px 20px rgba(218, 47, 127, 0.45);
+  /* The modal screen will resize according to the width */
+  .modalCard {
+    width: 100%;
+    max-width: 360px;
+    margin: 24px auto;
+    padding: 20px;
+    border-radius: 16px;
+    box-sizing: border-box;
+  }
+
+  .title {
+    font-size: 20px;
+    margin-bottom: 8px;
+  }
+
+  .previewImage {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 6px;
+  }
+
+  .nameInput {
+    margin-bottom: 10px;
+  }
+
+  /* The label and dropdown will appear in a vertical layout on mobile */
+  .dropdownRow {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
+  .dropdownLabel {
+    width: 100%;
+    text-align: left;
+    white-space: normal;
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  .avatarSelect {
+    width: 100%;
+  }
+
+  /* Buttons will be shown in a vertical stack on mobile */
+  .buttonGroup {
+    flex-direction: column-reverse;
+    gap: 10px;
+  }
+
+  .btnBase {
+    width: 100%;
+    padding: 11px;
+    font-size: 14px;
+  }
 }

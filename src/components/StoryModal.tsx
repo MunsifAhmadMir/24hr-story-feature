@@ -1,6 +1,6 @@
+import { useEffect, useRef, useState } from "react";
 import StoryProgressBar from "./StoryProgressBar";
 import UserBadge from "./UserBadge";
-import { useEffect, useState } from "react";
 import type { StoryType } from "../types/story";
 import styles from "./StoryModal.module.css";
 
@@ -13,7 +13,7 @@ interface StoryModalProps {
 }
 
 // ======================================================================================
-//  MAIN COMPONENT
+// MAIN COMPONENT
 // ======================================================================================
 
 export default function StoryModal({
@@ -23,72 +23,53 @@ export default function StoryModal({
   onNext,
   onPrev,
 }: StoryModalProps) {
-  // Stores the current screen width in pixels to handle responsive layouts (mobile vs desktop)
+  // Component state and refs
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  // Is boolean flag se pure CSS transition smooth chalay ga bina state looping ke
   const [isAnimate, setIsAnimate] = useState(false);
-
-  // Tracks where the user first touches the screen on the horizontal axis
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
-  // Tracks where the user lifts their finger off the screen on the horizontal axis
   const [touchEndX, setTouchEndX] = useState<number | null>(null);
 
+  // Always stores the latest onNext function in the ref
+  const onNextRef = useRef(onNext);
+
+  // Extracts the index of the current story
   const currentStoryIndex = stories.findIndex((s) => s.id === currentStory.id);
 
+  // Keep the latest onNext reference updated
   useEffect(() => {
-    // 2. Function that captures and updates the new screen width during a resize
+    onNextRef.current = onNext;
+  });
+
+  // Window resize listener
+  useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth);
-    // 3. Setup a "Watchman" (listener) to trigger the handleResize function on every screen change
+
     window.addEventListener("resize", handleResize);
-    // 4. Cleanup: Removes the listener when the modal closes to prevent memory leaks
     return () => window.removeEventListener("resize", handleResize);
-  }, []); // 5. Empty/Dependency Array [] ensures this setup runs ONLY ONCE when the component loads
+  }, []); // Runs only once when the component mounts.
 
-  // FIXED: Warning aur Flicker khatam karne ke liye simple hardware-accelerated timers
+  // Story timer
   useEffect(() => {
-    setIsAnimate(false); // Reset timeline line to 0% immediately
+    setIsAnimate(true);
 
-    let firstFrameId: number;
-    let secondFrameId: number;
-
-    firstFrameId = requestAnimationFrame(() => {
-      secondFrameId = requestAnimationFrame(() => {
-        setIsAnimate(true);
-      });
-    });
-
-    // Exact 3000ms timer to auto-advance the story layout
     const storyTimeout = setTimeout(() => {
-      onNext();
+      onNextRef.current();
     }, 3000);
 
-    // Safely destroy both animation threads and the timeout
     return () => {
-      cancelAnimationFrame(firstFrameId);
-      if (secondFrameId) {
-        cancelAnimationFrame(secondFrameId);
-      }
       clearTimeout(storyTimeout);
     };
-  }, [currentStory.id, onNext]);
+  }, [currentStory.id]);
 
-  // ------------------------------------------
-  //
-  // ------------------------------------------
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setTouchStartX(e.targetTouches[0].clientX);
+  // Swipe gesture handlers
+  const handleTouchStart = (event: React.TouchEvent) => {
+    setTouchStartX(event.targetTouches[0].clientX);
   };
 
-  // ------------------------------------------
-  //
-  // ------------------------------------------
-  const handleTouchMove = (e: React.TouchEvent) => {
-    setTouchEndX(e.targetTouches[0].clientX);
+  const handleTouchMove = (event: React.TouchEvent) => {
+    setTouchEndX(event.targetTouches[0].clientX);
   };
 
-  // ------------------------------------------
-  //
-  // ------------------------------------------
   const handleTouchEnd = () => {
     if (!touchStartX || !touchEndX) return;
 
@@ -101,22 +82,19 @@ export default function StoryModal({
       onPrev();
     }
 
-    // Reset states for the next swipe action
+    // Reset the values for the swipe.
     setTouchStartX(null);
     setTouchEndX(null);
   };
 
-  // 6. Check if screen is mobile size; returns true if under 500px,
-  // otherwise false
+  // Mobile screen check
   const isMobile = windowWidth < 500;
 
-  // ====================================================================================
-  // SCREEN RENDER (RETURN)
-  // ====================================================================================
+  // ======================================================================================
+  // RENDER UI (RETURN)
+  // ======================================================================================
 
   return (
-    //  1. BLACK FULL-SCREEN OVERLAY DIV: Dark background that covers
-    // the entire screen
     <div
       onClick={onClose}
       onTouchStart={handleTouchStart}
@@ -126,10 +104,10 @@ export default function StoryModal({
     >
       <img src={currentStory.image} alt="" className={styles.blurBg} />
 
-      {/* Desktop Left Button */}
+      {/* Desktop previous button */}
       <button
-        onClick={(e) => {
-          e.stopPropagation();
+        onClick={(event) => {
+          event.stopPropagation();
           onPrev();
         }}
         className={styles.navbutton}
@@ -137,24 +115,20 @@ export default function StoryModal({
         ‹
       </button>
 
-      {/* Main Container Card */}
-
-      {/* Renders equal-width multi-segment progress bars using
-        hardware-accelerated // CSS transitions to smoothly track active
-        playback without interface flickering */}
+      {/* Main story card */}
       <div
-        onClick={(e) => e.stopPropagation()}
+        onClick={(event) => event.stopPropagation()}
         className={styles.cardContainer}
       >
+        {/* Story progress indicator */}
         <StoryProgressBar
           stories={stories}
           currentStoryIndex={currentStoryIndex}
           isAnimate={isAnimate}
         />
-        {/* Main User Profile Header Bar */}
+        {/* Story header */}
         <div className={styles.headerBar}>
-          {/* Keeps the avatar photo and username aligned side-by-side 
-          in one line */}
+          {/* User information */}
           <UserBadge
             avatar={currentStory.avatar}
             name={currentStory.name}
@@ -162,37 +136,36 @@ export default function StoryModal({
             textColor="#ffffff"
           />
 
-          {/* Close button inside the main header bar */}
+          {/* Close button */}
           <button onClick={onClose} className={styles.closeButton}>
             ✕
           </button>
         </div>
-        {/* Story Asset Frame Area:
-        Keeps absolute tap zones limited only to the image area */}
+
+        {/* Story image container */}
         <div className={styles.imageWrapper}>
           <img
             src={currentStory.image}
             alt={currentStory.name}
             className={styles.storyImage}
           />
-          {/* Only show these hidden tap zones on mobile screen sizes */}
+
+          {/* Mobile tap zones */}
           {isMobile && (
             <>
-              {/* Invisible layer on the left 50% area to triggers the 
-              previous story */}
+              {/* Left tap zone */}
               <div
-                onClick={(e) => {
-                  e.stopPropagation();
+                onClick={(event) => {
+                  event.stopPropagation();
                   onPrev();
                 }}
                 className={`${styles.tapZone} ${styles.leftTap}`}
               />
 
-              {/* Invisible layer on the right 50% area to triggers 
-              the next story */}
+              {/* Right tap zone */}
               <div
-                onClick={(e) => {
-                  e.stopPropagation();
+                onClick={(event) => {
+                  event.stopPropagation();
                   onNext();
                 }}
                 className={`${styles.tapZone} ${styles.rightTap}`}
@@ -201,10 +174,11 @@ export default function StoryModal({
           )}
         </div>
       </div>
-      {/* Desktop Right Button */}
+
+      {/* Desktop next button */}
       <button
-        onClick={(e) => {
-          e.stopPropagation();
+        onClick={(event) => {
+          event.stopPropagation();
           onNext();
         }}
         className={styles.navbutton}

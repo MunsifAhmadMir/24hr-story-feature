@@ -7,25 +7,45 @@ import CreateStoryModal from "./components/CreateStoryModal";
 import styles from "./App.module.css";
 import { FiSun, FiMoon } from "react-icons/fi";
 
+// ======================================================================================
+// MAIN COMPONENT
+// ======================================================================================
+
 export default function App() {
+  // ======================================================================================
+  // COMPONENT STATE
+  // ======================================================================================
+
+  // Current application theme
   const [theme, setTheme] = useState<"light" | "dark">(() => {
     return (localStorage.getItem("app-theme") as "light" | "dark") || "light";
   });
 
+  // Currently opened story
   const [activeStoryId, setActiveStoryId] = useState<null | number>(null);
+
+  // Temporary image selected for a new story
   const [tempImage, setTempImage] = useState<string | null>(null);
+
+  // User name entered while creating a story
   const [inputName, setInputName] = useState("");
+
+  // Selected avatar for the new story
   const [selectedAvatar, setSelectedAvatar] = useState("none");
 
+  // Load stories from local storage and remove expired stories
   const [stories, setStories] = useState<StoryType[]>(() => {
     const savedStories = localStorage.getItem("insta_stories");
+
     if (savedStories) {
       const parsedStories: StoryType[] = JSON.parse(savedStories);
+
       const twentyFourHoursInMs = 24 * 60 * 60 * 1000;
       const currentTime = Date.now();
 
       return parsedStories.filter((story) => {
         if (!story.createdAt) return true;
+
         return currentTime - story.createdAt < twentyFourHoursInMs;
       });
     } else {
@@ -33,15 +53,22 @@ export default function App() {
     }
   });
 
+  // ======================================================================================
+  // EFFECTS
+  // ======================================================================================
+
+  // Persist theme changes
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
     localStorage.setItem("app-theme", theme);
   }, [theme]);
 
+  // Toggle between light and dark themes
   const toggleTheme = () => {
     setTheme((prev) => (prev === "light" ? "dark" : "light"));
   };
 
+  // Persist stories in local storage
   useEffect(() => {
     try {
       localStorage.setItem("insta_stories", JSON.stringify(stories));
@@ -57,8 +84,14 @@ export default function App() {
     }
   }, [stories]);
 
+  // Returns the currently selected story
   const currentStory = stories.find((story) => story.id === activeStoryId);
 
+  // ======================================================================================
+  // EVENT HANDLERS
+  // ======================================================================================
+
+  // Validates the selected image before creating a story
   const handleFilePicked = (base64String: string) => {
     const stringLength = base64String.length - (base64String.indexOf(",") + 1);
     const sizeInBytes = (stringLength * 3) / 4;
@@ -73,14 +106,17 @@ export default function App() {
     setTempImage(base64String);
   };
 
+  // Creates and publishes a new story
   const handlePublishStory = () => {
     if (!tempImage) return;
 
+    // Resolve the selected avatar
     const finalAvatarUrl =
       selectedAvatar === "none"
         ? ""
         : `https://i.pravatar.cc/150?img=${selectedAvatar}`;
 
+    // Create the new story object
     const newStory: StoryType = {
       id: Date.now(),
       name: inputName.trim() || "You",
@@ -90,11 +126,18 @@ export default function App() {
     };
 
     setStories((prevStories) => [newStory, ...prevStories]);
+
+    // Reset the story creation form
     setTempImage(null);
     setInputName("");
     setSelectedAvatar("none");
   };
 
+  // ======================================================================================
+  // STORY NAVIGATION
+  // ======================================================================================
+
+  // Navigate to the next story
   const handleNextStory = useCallback(() => {
     const currentIndex = stories.findIndex((s) => s.id === activeStoryId);
     if (currentIndex < stories.length - 1) {
@@ -104,6 +147,7 @@ export default function App() {
     }
   }, [activeStoryId, stories]);
 
+  // Navigate to the previous story
   const handlePrevStory = useCallback(() => {
     const currentIndex = stories.findIndex((s) => s.id === activeStoryId);
     if (currentIndex > 0) {
@@ -111,10 +155,16 @@ export default function App() {
     }
   }, [activeStoryId, stories]);
 
+  // ====================================================================================
+  // RENDER UI (RETURN)
+  // ====================================================================================
+
   return (
     <div className={styles.appContainer}>
       <div className={styles.appFrame}>
+        {/* Application header */}
         <header className={styles.appHeader}>
+          {/* Brand logo */}
           <div
             className={styles.headerLeft}
             onClick={() => {
@@ -215,6 +265,7 @@ export default function App() {
                   strokeWidth="2"
                   strokeLinecap="round"
                 />
+
                 <defs>
                   <linearGradient
                     id="instaGradient"
@@ -240,6 +291,8 @@ export default function App() {
               <span className={styles.letter}>s</span>
             </h1>
           </div>
+
+          {/* Theme toggle button */}
           <button
             onClick={toggleTheme}
             className={styles.iconBtn}
@@ -249,21 +302,27 @@ export default function App() {
           </button>
         </header>
 
+        {/* Stories list */}
         <StoriesBar
           onSelectStory={setActiveStoryId}
           stories={stories}
           onUploadStory={handleFilePicked}
         />
 
+        {/* Dashboard */}
         <div className={styles.dashboardArea}>
           <div className={styles.dashboardCard}>
             <div className={styles.dashboardIcon}>📸</div>
+
             <h2 className={styles.dashboardTitle}>Share Your Moments</h2>
+
             <p className={styles.dashboardDesc}>
               Upload your favorite images as ephemeral stories. Photos will
               automatically clear from local memory after 24 hours.
             </p>
+
             <div className={styles.buttonGroupRow}>
+              {/* Upload story button */}
               <button
                 onClick={() => {
                   window.dispatchEvent(new Event("trigger-story-upload"));
@@ -285,6 +344,8 @@ export default function App() {
                 </svg>
                 Upload Story
               </button>
+
+              {/* Active stories counter */}
               <div className={styles.statusBadge}>
                 Active Stories: {stories.length}
               </div>
@@ -293,8 +354,10 @@ export default function App() {
         </div>
       </div>
 
+      {/* Story viewer modal */}
       {currentStory && (
         <StoryModal
+          key={currentStory.id}
           currentStory={currentStory}
           stories={stories}
           onClose={() => setActiveStoryId(null)}
@@ -303,6 +366,7 @@ export default function App() {
         />
       )}
 
+      {/* Story creation modal */}
       {tempImage && (
         <CreateStoryModal
           tempImage={tempImage}

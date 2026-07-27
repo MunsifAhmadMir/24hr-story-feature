@@ -86,7 +86,14 @@
 }
 
 .label {
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
   font-size: 12px;
-  margin-top: 6px;
-  color: #555555;
+  font-weight: 500;
+  margin-top: 9px;
+  color: var(--text-color);
+  opacity: 0.85;
+  text-align: center;
 }

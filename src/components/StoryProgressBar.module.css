@@ -1,3 +1,4 @@
+/* Arranges the progress bars in a row */
 .progressContainer {
   padding: 10px 16px 2px 16px;
   background-color: transparent;
@@ -5,6 +6,7 @@
   gap: 6px;
 }
 
+/* Progress track for each story */
 .barTrack {
   height: 3px;
   flex: 1;
@@ -13,11 +15,13 @@
   overflow: hidden;
 }
 
+/* Progress bar's filled part */
 .barFill {
   height: 100%;
   background-color: #ffffff;
 }
 
+/* Smooth fill animation for active story */
 .animatedFill {
   transition: width 3000ms linear;
 }

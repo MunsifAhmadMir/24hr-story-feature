@@ -1,4 +1,5 @@
 .itemContainer {
+  /* Arranges the story avatar and username vertically */
   padding: 5px;
   display: flex;
   flex-direction: column;
@@ -12,19 +13,31 @@
   border-radius: 50%;
   padding: 2px;
   border: 2px solid transparent;
-  /*Makes border clear so gradient can show through First part 
-  adds white gap, second adds Insta colors */
+
+  /* Creates an Instagram-style gradient border around the avatar */
   background-image:
     linear-gradient(white, white),
     linear-gradient(45deg, #f99d1c, #da2f7f, #7c3cb5);
+
   background-origin: border-box;
-  /* Stretches the gradient colors to fill the entire border area */
+
+  /* Keeps the gradient visible only on the border ring */
   background-clip: content-box, border-box;
-  /* Protects the center photo and keeps colors only on the ring */
 }
 
 .username {
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
+  font-weight: 500;
   font-size: 12px;
   margin-top: 6px;
-  color: #555555;
+  color: var(--text-color);
+  opacity: 0.85;
+  text-align: center;
+  max-width: 64px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

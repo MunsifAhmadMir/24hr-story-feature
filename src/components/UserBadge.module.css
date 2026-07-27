@@ -1,14 +1,17 @@
+/* Aligns the user avatar and username in a single row */
 .badgeContainer {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
+/* Displays the user profile image in a circular shape */
 .avatar {
   border-radius: 50%;
   object-fit: cover;
 }
 
+/* Styles the user name text */
 .username {
   font-weight: 600;
   font-size: 16px;

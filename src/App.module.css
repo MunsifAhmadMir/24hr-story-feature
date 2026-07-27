@@ -14,7 +14,7 @@
   --icon-hover: #1f1f23;
 }
 
-/* Main Wrapper App Card */
+/* Main application wrapper */
 .appContainer {
   min-height: 100vh;
   display: flex;
@@ -39,11 +39,7 @@
   flex-direction: column;
 }
 
-[data-theme="dark"] .appFrame {
-  box-shadow: none;
-}
-
-/* Modern Header Layout */
+/* Application header */
 .appHeader {
   display: flex;
   justify-content: space-between;
@@ -54,70 +50,72 @@
   transition: background-color 0.3s ease;
 }
 
-/* Left Brand Side */
+/* Interactive brand section */
 .headerLeft {
   display: flex;
   align-items: center;
   gap: 8px;
   cursor: pointer;
-  /*SMOOTH BUMP*/
   transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* The entire left brand area should interact slightly on hover */
+/* Slight highlight on hover */
 .headerLeft:hover {
   filter: brightness(1.05);
 }
 
-/* Upon clicking, both the camera and text will bump simultaneously */
+/* Press animation for the brand section */
 .headerLeft:active {
   transform: scale(0.94);
 }
 
+/* Brand logo container */
 .brandLogo {
   display: inline-flex;
   align-items: center;
   justify-content: center;
 }
 
-/* ── NEW CONTROL FOR CHOSEN LOGO VECTOR ── */
+/* Camera logo styling */
 .cameraLogoSvg {
-  width: 48px; /* Title text elements ke sath perfect size symmetry */
+  width: 48px;
   height: 48px;
   display: block;
 
-  /* Halka sa soft glow shadow backend effect dark application k liye */
+  /* Adds a subtle glow behind the logo */
   filter: drop-shadow(0px 2px 8px rgba(218, 47, 127, 0.25));
-  /* Sirf Hover ka tilt effect barkarar rakhne ke liye smooth transition */
+
+  /* Smooth hover animation */
   transition: transform 0.3s ease;
 }
 
-/* Hover effect on logo check */
+/* Logo hover animation */
 .brandLogo:hover .cameraLogoSvg {
-  transform: rotate(-10deg) scale(1.08); /* Chota sa interactive lens tilt pop step */
+  transform: rotate(-10deg) scale(1.08);
 }
 
+/* Brand name wrapper */
 .brandName {
   display: inline-flex;
   align-items: center;
-  gap: 1px; /* Letters ko halka sa aapas mein touch rakhne ke liye */
+  gap: 1px;
   margin: 0;
   padding: 0;
 }
 
-/* Base style for every paper-cut letter element */
+/* Individual brand letter styling */
 .letter {
   font-family:
     "Fredoka One",
     system-ui,
     -apple-system,
     sans-serif;
-  font-size: 1.6rem; /* Scaled down for application header balance */
+  font-size: 1.6rem; /* Balanced font size for the application header */
   font-weight: 900;
   position: relative;
   display: inline-block;
 
-  /* PRECISE WHITE STROKE + 3D DEPTH SHADOW FOR APP GRAPHICS */
+  /* Creates a subtle outlined depth effect */
   filter: drop-shadow(0.5px 0.5px 0px var(--header-bg))
     drop-shadow(-0.5px -0.5px 0px var(--header-bg))
     drop-shadow(1.5px 3px 4px rgba(0, 0, 0, 0.15));
@@ -126,62 +124,54 @@
   cursor: pointer;
 }
 
-/* Hover effects dynamic bounce animations layer */
+/* Hover animation for each letter */
 .letter:hover {
   transform: translateY(-3px) scale(1.06);
-  z-index: 50 !important;
+  z-index: 50;
 }
 
-/* ── INDIVIDUAL SYMMETRICAL APP THEME COLOURED SEGMENTS ── */
+/* Individual brand letter colors */
 
-/* Letter 'S' - Deep Orange Glow */
 .letter:nth-child(1) {
-  font-size: 2.1rem; /* S stays clean dominant display font */
+  font-size: 2.1rem; /* Slightly larger first letter for visual emphasis */
   color: #f99d1c;
   z-index: 7;
 }
 
-/* Letter 't' - Warm Sunset Salmon */
 .letter:nth-child(2) {
   color: #f1684c;
   z-index: 6;
   margin-left: -2px;
 }
 
-/* Letter 'o' - Rich Magenta Pink */
 .letter:nth-child(3) {
   color: #da2f7f;
   z-index: 5;
   margin-left: -2px;
 }
 
-/* Letter 'r' - Deep Fuchsia */
 .letter:nth-child(4) {
   color: #bc359c;
   z-index: 4;
 }
 
-/* Letter 'i' - Electric Violet */
 .letter:nth-child(5) {
   color: #9c3cb5;
   z-index: 3;
 }
 
-/* Letter 'e' - Deep Royal Orchid */
 .letter:nth-child(6) {
   color: #7c3cb5;
   z-index: 2;
   margin-left: -2px;
 }
 
-/* Letter 's' - Soft Plum Violet */
 .letter:nth-child(7) {
   color: #642b99;
   z-index: 1;
   margin-left: -2px;
 }
 
-/* Right Side Theme Trigger */
 .iconBtn {
   background: none;
   border: 1px solid var(--border-color);
@@ -212,22 +202,18 @@
   height: 24px;
 }
 
-/* ── LOWER DASHBOARD PANEL STYLES ── */
-
-/* Background flexbox area surrounding the empty space */
+/* Main dashboard content area */
 .dashboardArea {
-  flex-grow: 1; /* It will automatically fill all the remaining empty vertical space */
+  flex-grow: 1;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 40px 24px;
-  background-color: var(
-    --bg-color
-  ); /* Light mod => off-white, dark => jet black */
+  background-color: var(--bg-color);
   transition: background-color 0.3s ease;
 }
 
-/* Central layout block card container */
+/* Main dashboard card */
 .dashboardCard {
   text-align: center;
   max-width: 400px;
@@ -267,7 +253,7 @@
 .buttonGroupRow {
   display: flex;
   justify-content: center;
-  align-items: center; /* Exact vertical baseline centering */
+  align-items: center;
   gap: 12px;
   width: 100%;
 }
@@ -344,4 +330,35 @@
 .dashboardUploadBtn svg {
   width: 15px;
   height: 15px;
+}
+
+/* ======================================================================================
+   MOBILE LAYOUT
+   ====================================================================================== */
+
+@media (max-width: 480px) {
+  /* Stack dashboard buttons vertically on small screens */
+  .buttonGroupRow {
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    padding: 0 10px; /* Safe padding injection */
+  }
+
+  /* Make upload button full width */
+  .dashboardUploadBtn {
+    width: 100%;
+    max-width: 100%;
+    min-width: unset; /* Removes desktop static width blockers */
+    height: 42px; /* Soft comfortable tap targets sizes */
+  }
+
+  /* Make status badge full width */
+  .statusBadge {
+    width: 100%;
+    max-width: 100%;
+    min-width: unset;
+    height: 42px;
+    white-space: nowrap; /* Strictly restricts number splitting or structural rows breaking */
+  }
 }

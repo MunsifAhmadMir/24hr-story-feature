@@ -1,5 +1,9 @@
 import styles from "./CreateStoryModal.module.css";
 
+/* ==========================================================
+   Component Props
+   State and handlers received from the parent component.
+   ========================================================== */
 interface CreateStoryModalProps {
   tempImage: string;
   inputName: string;
@@ -12,6 +16,9 @@ interface CreateStoryModalProps {
   onPublish: () => void;
 }
 
+// ======================================================================================
+//  MAIN COMPONENT
+// ======================================================================================
 export default function CreateStoryModal({
   tempImage,
   inputName,
@@ -21,21 +28,26 @@ export default function CreateStoryModal({
   onCancel,
   onPublish,
 }: CreateStoryModalProps) {
+  /* If there is no image selected, do not render the modal */
   if (!tempImage) return null;
 
+  // ====================================================================================
+  // RENDER UI (RETURN)
+  // ====================================================================================
   return (
     <div className={styles.overlay}>
       <div className={styles.modalCard}>
+        {/* Modal Heading */}
         <h2 className={styles.title}>Create Your Story</h2>
 
-        {/* Live Preview Box */}
+        {/* Live preview of the user-selected image */}
         <img
           src={tempImage}
           alt="Selected story preview"
           className={styles.previewImage}
         />
 
-        {/* Name Input field */}
+        {/* Name of the story owner */}
         <input
           type="text"
           placeholder="Enter your name..."
@@ -44,11 +56,12 @@ export default function CreateStoryModal({
           className={styles.nameInput}
         />
 
-        {/* Avatar Dropdown Wrapper*/}
+        {/* Avatar selection section */}
         <div className={styles.dropdownRow}>
           <label htmlFor="avatar-select" className={styles.dropdownLabel}>
             Select Profile Avatar
           </label>
+
           <select
             id="avatar-select"
             value={selectedAvatar}
@@ -62,7 +75,8 @@ export default function CreateStoryModal({
             <option value="18">Avatar 4 (Tech)</option>
           </select>
         </div>
-        {/* Action Buttons Row*/}
+
+        {/* Modal action buttons */}
         <div className={styles.buttonGroup}>
           <button
             onClick={onCancel}
@@ -70,6 +84,7 @@ export default function CreateStoryModal({
           >
             Cancel
           </button>
+
           <button
             onClick={onPublish}
             className={`${styles.btnBase} ${styles.btnPublish}`}

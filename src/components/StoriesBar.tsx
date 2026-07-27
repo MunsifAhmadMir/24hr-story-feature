@@ -1,5 +1,5 @@
 import StoryItem from "./StoryItem";
-import { useRef, useEffect } from "react"; // <-- Create the Ref hook
+import { useRef, useEffect } from "react";
 import type { StoryType } from "../types/story";
 import styles from "./StoriesBar.module.css";
 
@@ -28,7 +28,7 @@ interface StoriesBarProps {
 // ======================================================================================
 
 // ======================================================================================
-// 1. MAIN COMPONENT (Renders the horizontal list of user stories at the top of the feed)
+// MAIN COMPONENT (Renders the horizontal list of user stories at the top of the feed)
 // ======================================================================================
 
 export default function StoriesBar({
@@ -58,7 +58,7 @@ export default function StoriesBar({
 
   useEffect(() => {
     const handleGlobalTrigger = () => {
-      handlePlusClick(); // Yeh aapki purani bani hui native file click logic ko fire kar dega
+      handlePlusClick();
     };
 
     window.addEventListener("trigger-story-upload", handleGlobalTrigger);
@@ -68,7 +68,7 @@ export default function StoriesBar({
   }, []);
 
   // ------------------------------------------
-  // 1. STORY CLICK & RENDER LOGIC
+  // STORY CLICK & RENDER LOGIC
   // ------------------------------------------
   // Click handler for individual story circles to log action and notify parent App component
   function handleStoryClick(id: number) {
@@ -84,7 +84,7 @@ export default function StoriesBar({
   }
 
   // ------------------------------------------
-  // 2. FILE UPLOAD LOGIC (FileReader)
+  // FILE UPLOAD LOGIC (FileReader)
   // ------------------------------------------
   function handlePlusClick() {
     if (fileInputRef.current) {

@@ -34,7 +34,7 @@
   :root {
     --text: #9ca3af;
     --text-h: #f3f4f6;
-    /* FIXED: Changed to pure black to perfectly match your premium dark mode layout */
+    /* Pure black background for dark mode */
     --bg: #000000;
     --border: #2e303a;
     --code-bg: #1f2028;
@@ -51,7 +51,7 @@
   }
 }
 
-/* FIXED: Structural viewport rules to expand canvas edge-to-edge smoothly */
+/* Global viewport layout */
 html,
 body {
   margin: 0;
@@ -61,12 +61,12 @@ body {
 }
 
 #root {
-  /* FIXED: 1126px dynamic restriction removed permanently */
+  /* Allow the application to use the full viewport width */
   width: 100%;
   max-width: 100%;
   margin: 0;
   text-align: center;
-  /* FIXED: Border inline line removed so margins blend seamlessly */
+  /* Remove side borders from the root container */
   border-inline: none;
   min-height: 100vh;
   display: flex;
