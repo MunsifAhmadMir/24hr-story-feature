@@ -1,73 +1,167 @@
-# React + TypeScript + Vite
+# 📱 24-Hour Stories Feature
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, responsive, and accessible **Instagram-style Stories** feature built with **React**, **TypeScript**, **Vite**, and **CSS Modules**. The project supports story creation, interactive story viewing, light/dark themes, and a clean, modular architecture designed for scalability and maintainability.
 
-Currently, two official plugins are available:
+## Live Demo
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+You can view the live project deployed on Vercel here:  
+🔗 **[Launch Live Project](https://24hr-story-feature-six.vercel.app/)**
 
-## React Compiler
+## Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- View stories in a horizontal stories bar
+- Create and upload new stories
+- 24-hour story expiration
+- Light & Dark mode support
+- Fully responsive design
+- Smooth UI animations and transitions
+- Full-screen story viewer
+- Accessible form controls and semantic HTML
+- Fast performance with Vite
 
-## Expanding the ESLint configuration
+## Technical Highlights
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Component Architecture
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+The project follows a modular, component-based architecture. Each React component is paired with its own CSS Module, keeping styles isolated, maintainable, and free from global conflicts.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+| Component            | Responsibility                                                                        |
+| -------------------- | ------------------------------------------------------------------------------------- |
+| **App**              | Root application component responsible for application layout and state management.   |
+| **StoriesBar**       | Displays the horizontal list of user stories.                                         |
+| **StoryItem**        | Renders an individual story thumbnail with user information and interaction handling. |
+| **StoryModal**       | Displays the selected story in a full-screen modal with navigation controls.          |
+| **StoryProgressBar** | Shows animated progress for the currently active story.                               |
+| **CreateStoryModal** | Provides the interface for creating and uploading new stories.                        |
+| **UserBadge**        | Displays user avatar, name, and story status consistently across the application.     |
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Project Structure
+
+```text
+src/
+│
+├── App.tsx
+├── App.module.css
+│
+├── components/
+│   ├── StoriesBar.tsx
+│   ├── StoriesBar.module.css
+│   │
+│   ├── StoryItem.tsx
+│   ├── StoryItem.module.css
+│   │
+│   ├── StoryModal.tsx
+│   ├── StoryModal.module.css
+│   │
+│   ├── StoryProgressBar.tsx
+│   ├── StoryProgressBar.module.css
+│   │
+│   ├── CreateStoryModal.tsx
+│   ├── CreateStoryModal.module.css
+│   │
+│   ├── UserBadge.tsx
+│   └── UserBadge.module.css
+│
+├── data/
+│   └── defaultStories.tsx
+│
+├── types/
+│   └── story.ts
+│
+├── index.tsx
+
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Styling
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- CSS Modules for component-scoped styling
+- Clean separation of layout and presentation
+- Responsive design optimized for desktop and mobile devices
+- Global styles managed through `index.css`
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Performance
+
+- Optimized React hooks and dependency management
+- Reduced unnecessary re-renders
+- Efficient state management
+- Lightweight component structure
+- Fast development and production builds powered by Vite
+
+### Accessibility
+
+- Proper `label` and `htmlFor` associations
+- Semantic HTML structure
+- Improved screen reader compatibility
+
+### Code Quality
+
+- Type-safe React components using TypeScript
+- Consistent project structure
+- Modular and reusable codebase
+- Cleaner SVG markup
+- Component-scoped styling using CSS Modules
+
+## Tech Stack
+
+- React
+- TypeScript
+- Vite
+- CSS Modules
+- Git & GitHub
+- Vercel
+
+## Getting Started
+
+Clone the repository:
+
+```bash
+git clone https://github.com/MunsifAhmadMir/24hr-story-feature.git
 ```
+
+Navigate to the project:
+
+```bash
+cd 24hr-story-feature
+```
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Start the development server:
+
+```bash
+npm run dev
+```
+
+Open your browser and visit:
+
+```text
+http://localhost:5173
+```
+
+## Deployment
+
+The project is deployed on **Vercel** with automatic deployments enabled.
+
+Every push to the GitHub repository triggers a new production deployment, ensuring the live application always stays up to date.
+
+## License
+
+This project is available for educational and portfolio purposes.
+
+## Screenshots
+
+### Light Mode
+
+![Light Mode](image.png)
+
+### Dark Mode
+
+![Dark Mode](image-1.png)
+
+### Story Viewer
+
+![Story Viewer](image-2.png)
